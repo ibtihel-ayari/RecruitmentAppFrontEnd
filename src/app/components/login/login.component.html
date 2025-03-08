@@ -1,0 +1,53 @@
+<body class="flex items-center justify-center min-h-screen bg-gray-100 text-center">
+  <main class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <img
+      class="mb-4 mx-auto"
+      src="logo.jpg"
+      alt="Poulina Group Holding"
+      width="72"
+      height="57"
+    />
+    <h1 class="text-lg font-bold text-blue-600">Poulina Group Holding</h1>
+    <p class="mb-4 text-gray-500">Sign in to access your account</p>
+
+    <div class="mb-3">
+      <label for="email" class="block text-left text-gray-700">Username</label>
+      <input
+        [(ngModel)]="email"
+        type="email"
+        id="email"
+        placeholder="name@example.com"
+        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <div class="mb-4">
+      <label for="password" class="block text-left text-gray-700">Password</label>
+      <input
+        [(ngModel)]="password"
+        type="password"
+        id="password"
+        placeholder="Password"
+        class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    <button
+      class="w-full py-2 mb-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+      (click)="login()"
+    >
+      Login
+    </button>
+    
+    <button
+      class="w-full py-2 text-blue-600 border border-blue-600 rounded hover:bg-blue-50"
+      routerLink="/register"
+    >
+      Register
+    </button>
+
+    <p class="mt-4 text-gray-400 text-sm">
+      © 2025 Poulina Group Holding. All rights reserved.
+    </p>
+  </main>
+</body>
