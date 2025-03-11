@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserRegistration } from '../../models/user-registration.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -18,7 +18,7 @@ export class RegisterComponent {
     LastName:  '',
     Email:  '',
     Password:  '',
-    Role:  '',   //'candidate'
+    Role:  '',   
     BirthDate: new Date(),
   };
 

@@ -8,7 +8,7 @@ import { UserRegistration } from '../models/user-registration.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:44353/api/Auth/login'; // API URL for authentication
+  private apiUrl = 'https://localhost:44353/api/Auth/'; // API URL for authentication
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
@@ -27,7 +27,7 @@ export class AuthService {
   }
   
   registerUser(user: UserRegistration): Observable<any> {
-   return this.http.post(`${this.apiUrl}/register`, user);
+   return this.http.post(`${this.apiUrl}registerCandidate`, user);
   }
 
   // Get current user value
@@ -38,7 +38,7 @@ export class AuthService {
   // Login method
   login(email: string, password: string): Observable<any> {
     return this.http
-      .post<any>(`${this.apiUrl}`, { email, password })
+      .post<any>(`${this.apiUrl}login`, { email, password })
       .pipe(
         map((response) => {
           // Store user details and JWT in local storage
