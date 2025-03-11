@@ -1,1 +1,67 @@
 <p>navbar works!</p>
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion Immobilière</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-gray-900 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <a href="/annonces" class="text-yellow-400 text-2xl font-bold">
+            Gestion Immobilière
+          </a>
+          <div class="hidden md:flex space-x-6">
+            <a routerLink="annonces" class="text-white hover:text-yellow-400 transition">Les annonces</a>
+            <a routerLink="myannones" class="text-white hover:text-yellow-400 transition">Mes annonces</a>
+            <a routerLink="mydemandes"  class="text-white hover:text-yellow-400 transition">Mes Demandes</a>
+            <a routerLink="create-annonce" class="text-white hover:text-yellow-400 transition">Créer une annonce</a>
+            <a routerLink="occupations/:annonceId"  class="text-white hover:text-yellow-400 transition">Demande</a>
+            <a routerLink="favoris" class="text-white hover:text-yellow-400 transition">Favoris</a>
+            <a (click)="logout()" class="flex items-center text-white hover:text-yellow-400 transition">
+              <img src="https://cdn-icons-png.flaticon.com/512/1828/1828424.png" alt="Déconnexion" class="w-6 h-6 mr-2" />
+              Déconnexion
+            </a>
+          </div>
+          <div class="flex items-center gap-3 bg-gray-800 p-2 rounded-full text-white font-semibold transition hover:bg-gray-700">
+            <img src="assets/user.png" alt="Avatar" class="w-9 h-9 rounded-full object-cover" />
+            <span class="text-sm">{{ getUser().username }}</span>
+          </div>
+          <button class="md:hidden text-white" onclick="toggleMenu()">
+            ☰
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Menu Mobile -->
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-900 text-white p-4">
+      <a routerLink="annonces" class="block py-2 hover:text-yellow-400">Les annonces</a>
+      <a routerLink="myannones"  class="block py-2 hover:text-yellow-400">Mes annonces</a>
+      <a routerLink="mydemandes"  class="block py-2 hover:text-yellow-400">Mes Demandes</a>
+      <a routerLink="create-annonce" class="block py-2 hover:text-yellow-400">Créer une annonce</a>
+      <a routerLink="occupations/:annonceId"  class="block py-2 hover:text-yellow-400">Demande</a>
+      <a routerLink="favoris" class="block py-2 hover:text-yellow-400">Favoris</a>
+      <a (click)="logout()" class="block py-2 flex items-center hover:text-yellow-400">
+        <img src="https://cdn-icons-png.flaticon.com/512/1828/1828424.png" alt="Déconnexion" class="w-6 h-6 mr-2" />
+        Déconnexion
+      </a>
+    </div>
+
+    <script>
+      function toggleMenu() {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+      }
+    </script>
+  </body>
+</html>

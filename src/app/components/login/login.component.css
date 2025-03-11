@@ -1,0 +1,17 @@
+.logo-container {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease-in-out;
+    animation: slideIn 2s ease-in-out;
+}
+.logo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+    cursor: pointer;
+}
+@keyframes slideIn {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

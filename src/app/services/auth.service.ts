@@ -59,4 +59,10 @@ export class AuthService {
     this.currentUserSubject.next(null);
     this.router.navigate(['/login']); // Navigate to login page
   }
+
+  
+  // Check if the user is authenticated
+  isAuthenticated(): boolean {
+    return !!this.currentUserValue;
+  }
 }

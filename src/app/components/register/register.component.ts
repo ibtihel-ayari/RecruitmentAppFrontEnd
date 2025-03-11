@@ -3,11 +3,12 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { UserRegistration } from '../../models/user-registration.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })

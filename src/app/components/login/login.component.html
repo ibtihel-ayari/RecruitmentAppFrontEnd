@@ -1,4 +1,4 @@
-<body class="flex items-center justify-center min-h-screen bg-gray-100 text-center">
+<!--<body class="flex items-center justify-center min-h-screen bg-gray-100 text-center">
   <main class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
     <img
       class="mb-4 mx-auto"
@@ -50,4 +50,61 @@
       © 2025 Poulina Group Holding. All rights reserved.
     </p>
   </main>
+</body>-->
+<!--  -->   
+
+
+<body class="flex items-center justify-center h-screen bg-gray-100">
+  <div class="flex bg-white shadow-lg rounded-lg overflow-hidden w-full h-full">
+      <!-- Left Section (Logos) -->
+      <div class="w-2/3 bg-gray-200 flex items-center justify-center relative h-full">
+          <div id="logos" class="logo-container">
+              <img src="logo.jpg" class="logo opacity-50" alt="Logo 1" onclick="moveLogos(-1)">
+              <img src="logo.jpg" class="logo" alt="Main Logo" onclick="moveLogos(1)">
+              <img src="logo.jpg" class="logo opacity-50" alt="Logo 3" onclick="moveLogos(-1)">
+          </div>
+      </div>
+      
+      <!-- Right Section (Login Form) -->
+      <div class="w-1/3 p-16 flex flex-col justify-center h-full">
+          <div class="flex items-center justify-center mb-6">
+              <img src="logo2.jpg" class="w-50 h-50" alt="Poulina Group">
+          </div>
+          <h2 class="text-3xl font-semibold text-center mb-6">Connexion</h2>
+          <form>
+              <div class="mb-6">
+                  <label for="email" class="block text-gray-700 text-lg">Username</label>
+                  <input [(ngModel)]="email"
+                         type="email"
+                         id="email"
+                         name="email"
+                         placeholder="name@example.com"  
+                         class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+              </div>
+              <div class="mb-6">
+                  <label for="password" class="block text-gray-700 text-lg">Password</label>
+                  <input type="password"   
+                         [(ngModel)]="password"
+                         id="password"
+                         name="password"
+                         placeholder="Password"
+                         class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
+              </div>
+              <div class="flex space-x-6">
+                  <button (click)="login()" class="w-full bg-blue-600 text-white py-3 text-lg rounded-lg hover:bg-blue-700">Connexion</button>
+                  <button routerLink="/register" class="w-full bg-red-600 text-white py-3 text-lg rounded-lg hover:bg-red-700">Register</button>
+              </div>
+          </form>
+      </div>
+  </div>
+  
+  <script>
+      function moveLogos(direction) {
+          const logos = document.getElementById("logos");
+          logos.style.transform = `translateX(${direction * 100}px)`;
+          setTimeout(() => {
+              logos.style.transform = "translateX(0)";
+          }, 500);
+      }
+  </script>
 </body>
