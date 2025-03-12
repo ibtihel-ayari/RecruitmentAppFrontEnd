@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
@@ -13,5 +13,13 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'Application';
-  
+  showNavbar = true;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showNavbar = !['/login', '/register'].includes(event.url);
+      }
+    });
+  }
 }

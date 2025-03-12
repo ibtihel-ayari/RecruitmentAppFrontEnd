@@ -21,4 +21,18 @@ export class NavbarComponent {
     const user = JSON.parse(localStorage.getItem('currentUser') || '{}')
     return  user
   }
+
+  islogged() : boolean {
+    return this.auth.isAuthenticated()
+  }
+  isAdmin() : boolean {
+    return this.auth.isAdmin()
+  }
+  isRH() : boolean {
+    return this.auth.isRH()
+  }
+  isCandidate() : boolean {
+    return this.auth.isCandidate()
+  }
+
 }

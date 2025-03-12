@@ -65,4 +65,17 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.currentUserValue;
   }
+
+
+  isAdmin(): boolean {
+    return this.currentUserValue.role == 'Admin';
+  }
+  isRH(): boolean {
+    return this.currentUserValue.role == 'RH';
+  }
+  isCandidate(): boolean {
+    return this.currentUserValue.role == 'Candidate';
+  }
+
+
 }
