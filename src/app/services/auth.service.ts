@@ -35,15 +35,16 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  // Login method
   login(email: string, password: string): Observable<any> {
     return this.http
       .post<any>(`${this.apiUrl}login`, { email, password })
       .pipe(
         map((response) => {
-          // Store user details and JWT in local storage
-          localStorage.setItem('currentUser', JSON.stringify(response.user));
-          this.currentUserSubject.next(response.user);
+          // Ensure the response contains a valid user object
+          if (response && response.user) {
+            localStorage.setItem('currentUser', JSON.stringify(response.user));
+            this.currentUserSubject.next(response.user);
+          }
           return response;
         }),
         catchError((error) => {
