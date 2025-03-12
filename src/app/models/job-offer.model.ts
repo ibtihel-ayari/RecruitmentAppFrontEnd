@@ -1,3 +1,5 @@
+import { Application } from "./application.model";
+
 export interface JobOffer {
     id: number;
     title: string;
