@@ -7,18 +7,32 @@ import { JobOffer } from '../models/job-offer.model';
   providedIn: 'root'
 })
 export class JobofferService {
-  private apiUrl = 'https://localhost:44353/api/JobOffer/GetAllJobOffers';
+  private apiUrl = 'https://localhost:44353/api/JobOffer';
 
   constructor(private http: HttpClient) { }
+
+  // Get all job offers
   getJobOffer(): Observable<JobOffer[]> {
-    return this.http.get<JobOffer[]>(`${this.apiUrl}`);
+    return this.http.get<JobOffer[]>(`${this.apiUrl}/GetAllJobOffers`);
   }
 
-  createJobOffer(jobOffer: any): Observable<JobOffer> {
-    return this.http.post<any>(`${this.apiUrl}/create`, jobOffer);
+  // Get job offer by ID
+  getJobOffersById(id: number): Observable<JobOffer> {
+    return this.http.get<JobOffer>(`${this.apiUrl}/GetJobOfferById/${id}`);
   }
-  getJobOffersbyid(id:number): Observable<JobOffer[]> {
-    return this.http.get<JobOffer[]>(`${this.apiUrl}/getbyid/${id}/`);
+
+  // Create a new job offer
+  createJobOffer(jobOffer: JobOffer): Observable<JobOffer> {
+    return this.http.post<JobOffer>(`${this.apiUrl}/PostJobOffer`, jobOffer);
+  }
+
+  // Update an existing job offer
+  updateJobOffer(id: number, jobOffer: JobOffer): Observable<JobOffer> {
+    return this.http.put<JobOffer>(`${this.apiUrl}/PutJobOffer/${id}`, jobOffer);
+  }
+
+  // Delete a job offer
+  deleteJobOffer(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/DeleteJobOffer/${id}`);
   }
 }
-
