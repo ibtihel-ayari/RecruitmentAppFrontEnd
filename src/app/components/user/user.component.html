@@ -1,0 +1,33 @@
+<div *ngIf="users.length > 0" class="container mx-auto p-4  ml-72">
+  <h2 class="text-2xl font-bold text-center ">Gestion des Utilisateurs</h2>
+
+
+ 
+
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <h3 class="text-lg font-semibold mb-4">Liste des utilisateurs</h3>
+    <table class="w-full border-collapse border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="text-lg border px-4 py-2">Prénom</th>
+          <th class="border px-4 py-2">Nom</th>
+          <th class="border px-4 py-2">Email</th>
+          <th class="border px-4 py-2">Role</th>
+          <th class="border px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users ; trackBy: trackByFn">
+          <td class="border px-4 py-2 ">{{ user.firstName }}</td>
+          <td class="border px-4 py-2">{{ user.lastName }}</td>
+          <td class="border px-4 py-2">{{ user.email }}</td> 
+          <td class="border px-4 py-2">{{ user.role }}</td>    
+          <td class="border px-4 py-2 flex space-x-2">
+            <button (click)="selectUser(user)" class="bg-yellow-500 text-white px-2 py-1 rounded">Modifier</button>
+            <button (click)="deleteUser(user.id)" class="bg-red-500 text-white">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
