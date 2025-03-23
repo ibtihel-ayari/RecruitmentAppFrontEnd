@@ -1,0 +1,46 @@
+<div class="h-48"></div>
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <form
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit()"
+    class="container py-5 px-4 rounded-lg shadow-lg bg-white max-w-lg"
+  >
+    <h2 class="text-center text-2xl font-bold text-gray-800 mb-4">
+      Ajouter un utilisateur
+    </h2>
+
+    <div class="mb-4">
+      <label for="firstName" class="font-semibold">Prénom:</label>
+      <input id="firstName" formControlName="firstName" class="w-full rounded-lg p-3 border border-gray-300" />
+    </div>
+
+    <div class="mb-4">
+      <label for="lastName" class="font-semibold">Nom:</label>
+      <input id="lastName" formControlName="lastName" class="w-full rounded-lg p-3 border border-gray-300" />
+    </div>
+
+    <div class="mb-4">
+      <label for="email" class="font-semibold">Email:</label>
+      <input id="email" formControlName="email" type="email" class="w-full rounded-lg p-3 border border-gray-300" />
+    </div>
+
+    <div class="mb-4">
+      <label for="password" class="font-semibold">Mot de passe:</label>
+      <input id="password" formControlName="password" type="password" class="w-full rounded-lg p-3 border border-gray-300" />
+    </div>
+
+    <div class="mb-4">
+      <label for="role" class="font-semibold">Rôle:</label>
+      <select id="role" formControlName="role" class="w-full rounded-lg p-3 border border-gray-300">
+        <option value="RH">RH</option>
+        <option value="Admin">Admin</option>
+      </select>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+        Soumettre
+      </button>
+    </div>
+  </form>
+</div>
