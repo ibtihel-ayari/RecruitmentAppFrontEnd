@@ -23,8 +23,8 @@ private apiUrl = 'https://localhost:44353/api';
   }
 
   // Create a new User
-  createUser(user: UserRegistration): Observable<UserRegistration> {
-    return this.http.post<UserRegistration>(`${this.apiUrl}/Auth/register`, user);
+  createUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/Auth/register`, user);
   }
 
   // Update an existing User
@@ -34,6 +34,6 @@ private apiUrl = 'https://localhost:44353/api';
 
   // Delete a User
   deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/User/DeleteUser/${id}`);
+   return this.http.delete<void>(`${this.apiUrl}/User/DeleteUser?userId=${id}`); 
   }
 }

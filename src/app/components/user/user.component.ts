@@ -57,8 +57,7 @@ export class UserComponent implements OnInit {
     }
   }*/
 
-  deleteUser(id?: number) {
-    console.log('deleteUser', id);
+  deleteUser(id: number) {
     
     if (id !== undefined) {
       this.userService.deleteUser(id).subscribe(() => {

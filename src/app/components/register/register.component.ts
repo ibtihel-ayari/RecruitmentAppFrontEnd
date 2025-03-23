@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class RegisterComponent {
   user: UserRegistration = {
+    Id: 0,
     FirstName:  '',
     LastName:  '',
     Email:  '',
