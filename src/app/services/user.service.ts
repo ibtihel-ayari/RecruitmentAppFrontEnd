@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserRegistration } from '../models/user-registration.model';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -18,8 +17,8 @@ private apiUrl = 'https://localhost:44353/api';
   }
 
   // Get User by ID
-  getUserById(id: number): Observable<UserRegistration> {
-    return this.http.get<UserRegistration>(`${this.apiUrl}/User/GetUserById/${id}`);
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/User/GetUserById?id=${id}`);
   }
 
   // Create a new User
@@ -28,8 +27,8 @@ private apiUrl = 'https://localhost:44353/api';
   }
 
   // Update an existing User
-  updateUser(id: number, user: UserRegistration): Observable<UserRegistration> {
-    return this.http.put<UserRegistration>(`${this.apiUrl}/User/PutUser/${id}`, user);
+  updateUser(id: number, user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/User/PutUser/${id}`, user);
   }
 
   // Delete a User

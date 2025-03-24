@@ -33,6 +33,6 @@ export class JobofferService {
 
   // Delete a job offer
   deleteJobOffer(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/DeleteJobOffer/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/DeleteJobOffer?jobofferId=${id}`);
   }
 }

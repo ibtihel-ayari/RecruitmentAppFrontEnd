@@ -31,4 +31,12 @@ export class JobofferComponent implements OnInit {
       }
     );
   }
+  deleteJobOffer(id: number) {
+    
+    if (id !== undefined) {
+      this.jobOfferService.deleteJobOffer(id).subscribe(() => {
+        this.loadJobOffers();
+      });
+    }
+  }
 }
