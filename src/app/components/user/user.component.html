@@ -40,7 +40,7 @@
           <td class="border px-4 py-2">{{ user.email }}</td>
           <td class="border px-4 py-2">{{ user.role }}</td>
           <td class="border px-4 py-2 flex space-x-2">
-            <button (click)="selectUser(user)" class="bg-yellow-500 text-white px-2 py-1 rounded">Modifier</button>
+            <a  [routerLink]="['/updateuser', user.id]"class="bg-yellow-500 text-white px-2 py-1 rounded">Modifier</a>
             <button (click)="deleteUser(user.id)" class="bg-red-500 text-white px-2 py-1 rounded">Supprimer</button>
           </td>
         </tr>
