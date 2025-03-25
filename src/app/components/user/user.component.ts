@@ -15,7 +15,7 @@ import { RouterLink } from '@angular/router';
 })
 export class UserComponent implements OnInit {
   users: User[] = [];
-
+  selectedUserId: number | null = null;
   selectedUser: User | null = null;
 
   constructor(private userService: UserService) {}
@@ -48,6 +48,17 @@ export class UserComponent implements OnInit {
   selectUser(user: User) {
     this.selectedUser = { ...user };
   }
+
+  deleteSelectedUser() {
+    if (this.selectedUserId !== null) {
+      this.userService.deleteUser(this.selectedUserId).subscribe(() => {
+        this.selectedUserId = null;
+        this.loadUsers();
+      });
+    } else {
+      alert('Veuillez sélectionner un utilisateur à supprimer.');
+    }
+  }
 /*
   updateUser() {
     if (this.selectedUser && this.selectedUser.Id !== undefined) {
@@ -57,6 +68,8 @@ export class UserComponent implements OnInit {
       });
     }
   }*/
+
+    
 
   deleteUser(id: number) {
     
