@@ -9,6 +9,7 @@ import { UseraddComponent } from './components/useradd/useradd.component';
 import { UserupdateComponent } from './components/userupdate/userupdate.component';
 import { JobofferaddComponent } from './components/jobofferadd/jobofferadd.component';
 import { ApplicationComponent } from './components/application/application.component';
+import { CandidateComponent } from './components/candidate/candidate.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -20,6 +21,7 @@ export const routes: Routes = [
     { path: 'user', component: UserComponent },
     { path: 'adduser', component: UseraddComponent },
     { path: 'updateuser/:id', component: UserupdateComponent },
+    { path: 'candidate', component: CandidateComponent },
     { path: 'application', component: ApplicationComponent },
 
 

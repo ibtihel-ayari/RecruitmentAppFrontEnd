@@ -19,7 +19,7 @@ private ApiUrl = 'https://localhost:44353/api/';
   }
   //create Candidate  
   createCandidate(Candidate: Candidate):Observable<Candidate>{
-    return this.http.post<Candidate>(`${this.ApiUrl}/Auth/registerCandidate`,Candidate);
+    return this.http.post<Candidate>(`${this.ApiUrl}Auth/registerCandidate`,Candidate);
   }
   //delete Candidate
   deleteCandidate(id:number):Observable<any>{

@@ -6,5 +6,5 @@ export interface Candidate {
       email: string;
       password: string;
       role: string; // 'candidate'
-      birthdate: Date;
+      birthDate: Date;
       Applications: any;    }
