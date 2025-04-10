@@ -34,4 +34,10 @@ ngOnInit(): void {
         })
     }
 
+
+    getFileUrl(path: string): string {
+      return `https://localhost:44353${path}`;
+    }
+    
+
 }

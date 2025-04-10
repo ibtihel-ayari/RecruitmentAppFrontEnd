@@ -39,8 +39,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let application of applications;">
-            <td class="border px-4 py-2">{{ application.cvFile }}</td>
-            <td class="border px-4 py-2">{{ application.photo }}</td>
+            <td class="border px-4 py-2">  <a *ngIf="application.cvFilePath" [href]="getFileUrl(application.cvFilePath)" target="_blank">Télécharger le CV</a>
+
+            </td>
+            <td class="border px-4 py-2">  <img *ngIf="application.photoPath" [src]="getFileUrl(application.photoPath)" width="100" alt="Photo du candidat" />
+
+            </td>
             <td class="border px-4 py-2">{{ application.submissionDate | date}}</td>
             <td class="border px-4 py-2">{{ application.status }}</td>
             <td class="border px-4 py-2">{{ application.candidateId }}</td>
