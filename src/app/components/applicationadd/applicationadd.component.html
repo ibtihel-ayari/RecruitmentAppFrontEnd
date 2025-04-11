@@ -1,1 +1,41 @@
-<p>applicationadd works!</p>
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold text-center">Ajouter une Candidature</h2>
+  
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96 mx-auto">
+      <form #applicationForm="ngForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+  
+        <label class="block mb-2">CV (PDF):</label>
+        <input type="file" (change)="onCvSelected($event)" name="cvFile" accept=".pdf" class="w-full border rounded px-2 py-1" required>
+  
+        <label class="block mt-2">Photo:</label>
+        <input type="file" (change)="onPhotoSelected($event)" name="photo" accept="image/*" class="w-full border rounded px-2 py-1" required>
+  
+        <label class="block mt-2">Date de soumission:</label>
+        <input type="date" [(ngModel)]="application.submissionDate" name="submissionDate" class="w-full border rounded px-2 py-1" required>
+  
+        <label class="block mt-2">Statut:</label>
+        <input type="text" [(ngModel)]="application.status" name="status" class="w-full border rounded px-2 py-1" placeholder="Statut de la candidature" required>
+  
+        <label class="block mt-2">Valider:</label>
+        <select [(ngModel)]="application.isValidated" name="isValidated" class="w-full border rounded px-2 py-1" required>
+          <option [value]="true">Oui</option>
+          <option [value]="false">Non</option>
+        </select>
+  
+        <label class="block mt-2">ID Candidat:</label>
+        <input type="number" [(ngModel)]="application.candidateId" name="candidateId" class="w-full border rounded px-2 py-1" required>
+  
+        <label class="block mt-2">ID Utilisateur:</label>
+        <input type="number" [(ngModel)]="application.userId" name="userId" class="w-full border rounded px-2 py-1" required>
+  
+        <label class="block mt-2">ID Offre d'emploi:</label>
+        <input type="number" [(ngModel)]="application.jobOfferId" name="jobOfferId" class="w-full border rounded px-2 py-1" required>
+  
+        <div class="flex justify-between mt-4">
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter</button>
+          <a routerLink="/application" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-center">Annuler</a>
+        </div>
+      </form>
+    </div>
+  </div>
+  

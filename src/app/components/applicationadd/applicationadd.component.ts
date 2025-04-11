@@ -1,12 +1,67 @@
 import { Component } from '@angular/core';
+import { Application } from '../../models/application.model';
+import { Router } from '@angular/router';
+import { ApplicationService } from '../../services/application.service';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-applicationadd',
   standalone: true,
-  imports: [],
+  imports: [FormsModule,CommonModule],
   templateUrl: './applicationadd.component.html',
   styleUrl: './applicationadd.component.css'
 })
 export class ApplicationaddComponent {
+application: Application={
+  id: 0,
+  cvFile: undefined,
+  cvFilePath: "", 
+  photo:undefined, 
+  photoPath:"",
+  submissionDate: new Date(),
+  status: "",
+  isValidated: false,
+  candidateId: 0,
+  userId: 0,
+  jobOfferId: 0,
+}
+constructor(private router:Router,private  applicationservice: ApplicationService){}
+onSubmit(): void {
+  if (!this.application.cvFile || !this.application.photo) {
+    console.error('CV and Photo are required');
+    return;
+  }
 
+  this.applicationservice.createApplications(
+    this.application,
+    this.application.cvFile,
+    this.application.photo
+  ).subscribe(
+    (response) => {
+      console.log('Application created:', response);
+      alert('Application created successfully!');
+      this.router.navigate(['/joboffer']);
+    },
+    (error) => {
+      console.error('Error creating application:', error);
+    }
+  );
+}
+
+
+onCvSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.application.cvFile = input.files[0];
+  }
+}
+
+onPhotoSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.application.photo = input.files[0];
+  }
+}
+ 
 }

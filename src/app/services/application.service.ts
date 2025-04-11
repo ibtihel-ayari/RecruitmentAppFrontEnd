@@ -28,7 +28,23 @@ getApplications():Observable<Application[]>{
   createAppliation(application:Application):Observable<Application>{
     return this.http.post<Application>(`${this.apiUrl}/PostApplications`,application);
   }
-
+  
+  createApplications(application: Application, cvFile: File, photo: File): Observable<Application> {
+    const formData = new FormData();
+    
+    // Append files
+    formData.append('CVFile', cvFile);
+    formData.append('Photo', photo);
+    
+    // Append other properties
+    formData.append('CandidateId', application.candidateId.toString());
+    formData.append('UserId', application.userId.toString());
+    formData.append('JobOfferId', application.jobOfferId.toString());
+    formData.append('Status', application.status);
+    formData.append('IsValidated', application.isValidated.toString());
+  
+    return this.http.post<Application>(`${this.apiUrl}/PostApplication`, formData);
+  }
 
 
   //Delete an application
