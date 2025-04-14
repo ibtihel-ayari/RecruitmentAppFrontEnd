@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Application } from '../../models/application.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService } from '../../services/application.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -13,55 +13,76 @@ import { CommonModule } from '@angular/common';
   styleUrl: './applicationadd.component.css'
 })
 export class ApplicationaddComponent {
-application: Application={
-  id: 0,
-  cvFile: undefined,
-  cvFilePath: "", 
-  photo:undefined, 
-  photoPath:"",
-  submissionDate: new Date(),
-  status: "",
-  isValidated: false,
-  candidateId: 0,
-  userId: 0,
-  jobOfferId: 0,
-}
-constructor(private router:Router,private  applicationservice: ApplicationService){}
-onSubmit(): void {
-  if (!this.application.cvFile || !this.application.photo) {
-    console.error('CV and Photo are required');
-    return;
+  application: Application = {
+    id: 0,
+    cvFile: undefined,
+    cvFilePath: "", 
+    photo: undefined, 
+    photoPath: "",
+    submissionDate: new Date(),
+    status: "En attente",
+    isValidated: false,
+    candidateId: 0, // sera mis à jour automatiquement
+    userId: 0,
+    jobOfferId: 0,
   }
 
-  this.applicationservice.createApplications(
-    this.application,
-    this.application.cvFile,
-    this.application.photo
-  ).subscribe(
-    (response) => {
-      console.log('Application created:', response);
-      alert('Application created successfully!');
-      this.router.navigate(['/joboffer']);
-    },
-    (error) => {
-      console.error('Error creating application:', error);
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private applicationservice: ApplicationService
+  ) {}
+
+  ngOnInit(): void {
+    // Récupérer l'ID du candidat depuis localStorage
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      const user = JSON.parse(storedUser);
+      this.application.candidateId = user.id;
     }
-  );
-}
 
-
-onCvSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    this.application.cvFile = input.files[0];
+    // Récupérer l'ID de l'offre depuis l'URL
+    const jobOfferIdFromUrl = this.route.snapshot.paramMap.get('id');
+    if (jobOfferIdFromUrl) {
+      this.application.jobOfferId = Number(jobOfferIdFromUrl);
+    }
   }
-}
 
-onPhotoSelected(event: Event): void {
-  const input = event.target as HTMLInputElement;
-  if (input.files && input.files.length > 0) {
-    this.application.photo = input.files[0];
+  onSubmit(): void {
+    if (!this.application.cvFile || !this.application.photo) {
+      console.error('CV and Photo are required');
+      return;
+    }
+
+    this.applicationservice.createApplications(
+      this.application,
+      this.application.cvFile,
+      this.application.photo
+    ).subscribe(
+      (response) => {
+        console.log('Application created:', response);
+        alert('Application created successfully!');
+        this.router.navigate(['/joboffer']);
+      },
+      (error) => {
+        console.error('Error creating application:', error);
+      }
+    );
   }
+
+  onCvSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.application.cvFile = input.files[0];
+    }
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.application.photo = input.files[0];
+    }
+  }
+
 }
  
-}

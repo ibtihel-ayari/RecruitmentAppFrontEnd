@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { JobOffer } from '../../models/job-offer.model';
 import { JobofferService } from '../../services/joboffer.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-joboffer',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './joboffer.component.html',
   styleUrl: './joboffer.component.css'
 })
@@ -16,7 +17,7 @@ export class JobofferComponent implements OnInit {
   jobOffers: JobOffer[] = []; // Store multiple job offers
   selectedJobOfferId: number | null = null;
 
-  constructor(private jobOfferService: JobofferService) {}
+  constructor(private jobOfferService: JobofferService, private auth: AuthService) {}
 
   ngOnInit() {
     this.loadJobOffers(); 
@@ -49,5 +50,16 @@ export class JobofferComponent implements OnInit {
         this.selectedJobOfferId = null; // Reset selection
       });
     }
+  }
+
+
+  isAdmin() : boolean {
+    return this.auth.isAdmin()
+  }
+  isRH() : boolean {
+    return this.auth.isRH()
+  }
+  isCandidate() : boolean {
+    return this.auth.isCandidate()
   }
 }

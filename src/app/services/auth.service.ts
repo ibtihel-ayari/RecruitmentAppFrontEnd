@@ -36,22 +36,24 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.http
-      .post<any>(`${this.apiUrl}login`, { email, password })
-      .pipe(
-        map((response) => {
-          // Ensure the response contains a valid user object
-          if (response && response.user) {
-            localStorage.setItem('currentUser', JSON.stringify(response.user));
-            this.currentUserSubject.next(response.user);
-          }
-          return response;
-        }),
-        catchError((error) => {
-          throw error;
-        })
-      );
+    return this.http.post<any>(`${this.apiUrl}login`, { email, password }).pipe(
+      map((response) => {
+        const user = response.user || response.candidate;
+        if (user) {
+          // Déterminez le rôle en fonction de la structure de l'objet
+          const role = response.user ? 'Admin' : 'Candidate';
+          const userWithRole = { ...user, role };
+          localStorage.setItem('currentUser', JSON.stringify(userWithRole));
+          this.currentUserSubject.next(userWithRole);
+        }
+        return response;
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    );
   }
+  
 
   // Logout method
   logout(): void {
@@ -69,14 +71,17 @@ export class AuthService {
 
 
   isAdmin(): boolean {
-    return this.currentUserValue.role == 'Admin';
+    return this.currentUserValue && this.currentUserValue.role === 'Admin';
   }
+  
   isRH(): boolean {
-    return this.currentUserValue.role == 'RH';
+    return this.currentUserValue && this.currentUserValue.role === 'RH';
   }
+  
   isCandidate(): boolean {
-    return this.currentUserValue.role == 'Candidate';
+    return this.currentUserValue && this.currentUserValue.role === 'Candidate';
   }
+  
 
 
 }

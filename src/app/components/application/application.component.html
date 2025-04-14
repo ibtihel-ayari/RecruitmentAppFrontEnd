@@ -29,12 +29,13 @@
         <thead>
           <tr class="bg-gray-100">
             <th class="text-lg border px-4 py-2"></th>
-            <th class="text-lg border px-4 py-2">cvFile</th>
-            <th class="border px-4 py-2">photo</th>
-            <th class="border px-4 py-2">submissionDate</th>
-            <th class="border px-4 py-2">status</th>
-            <th class="border px-4 py-2">candidateId</th>
-            <th class="border px-4 py-2">jobOfferId</th>
+            <th class="border px-4 py-2">Candidat</th>
+            <th class="text-lg border px-4 py-2">CV</th>
+            <th class="border px-4 py-2">Photo</th>
+            <th class="border px-4 py-2">Date de soumission</th>
+            <th class="border px-4 py-2">Status</th>
+          
+            <th class="border px-4 py-2">Offre</th>
 
             
           </tr>
@@ -44,6 +45,7 @@
             <td class="border px-4 py-2 text-center">
               <input type="radio" name="selectedApplication" [value]="application.id" [(ngModel)]="selectedApplicationId" (change)="selectApplication(application)">
             </td>
+            <td class="border px-4 py-2 uppercase">{{ getCandidateName(application.candidateId) }}</td>
             <td class="border px-4 py-2">  <a *ngIf="application.cvFilePath" [href]="getFileUrl(application.cvFilePath)" target="_blank">Télécharger le CV</a>
 
             </td>
@@ -52,7 +54,7 @@
             </td>
             <td class="border px-4 py-2">{{ application.submissionDate | date}}</td>
             <td class="border px-4 py-2">{{ application.status }}</td>
-            <td class="border px-4 py-2">{{ application.candidateId }}</td>
+         
             <td class="border px-4 py-2">{{ application.jobOfferId }}</td>
           </tr>
         </tbody>

@@ -4,7 +4,7 @@
   <!-- Conteneur des boutons alignés à droite -->
   <div class="flex justify-end space-x-2">
 
-    <button (click)="deleteSelectedJobOffer()" class="flex items-center justify-center w-10 h-10 bg-white text-red-500 rounded-md shadow-md hover:bg-red-100 transition duration-300">
+    <button *ngIf="isAdmin() || isRH" (click)="deleteSelectedJobOffer()" class="flex items-center justify-center w-10 h-10 bg-white text-red-500 rounded-md shadow-md hover:bg-red-100 transition duration-300">
       <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 6h18"></path>
         <path d="M8 6v14"></path>
@@ -14,7 +14,7 @@
       </svg>
     </button>
 
-    <a href="/addjoboffer" class="flex items-center justify-center w-10 h-10 bg-white text-green-800 border border-green-800 shadow-md rounded-md hover:bg-green-100 transition duration-300 text-2xl font-bold">
+    <a *ngIf="isAdmin() || isRH" href="/addjoboffer" class="flex items-center justify-center w-10 h-10 bg-white text-green-800 border border-green-800 shadow-md rounded-md hover:bg-green-100 transition duration-300 text-2xl font-bold">
       +
     </a>
   </div>
@@ -34,7 +34,7 @@
       <p class="text-gray-500 text-sm mb-3"><strong>Publié le :</strong> {{ jobOffer.publicationDate | date }}</p>
 
       <!-- Modifier Link -->
-      <a  href="/addapplication" class="text-blue-500 hover:text-blue-700 font-medium">Postuler</a>
+      <a [routerLink]="['/addapplication', jobOffer.id]" class="text-blue-500 hover:text-blue-700 font-medium">Postuler</a>
     </div>
   </div>
 </div>

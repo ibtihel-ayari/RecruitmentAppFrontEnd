@@ -27,11 +27,8 @@ export const routes: Routes = [
     { path: 'addcandidate', component: CandidateaddComponent },
     { path: 'application', component: ApplicationComponent },
     { path: 'addapplication', component: ApplicationaddComponent },
-
-
-
-
-
+    {path: 'addapplication/:id',loadComponent: () => import('./components/applicationadd/applicationadd.component').then(m => m.ApplicationaddComponent)},
+      
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
