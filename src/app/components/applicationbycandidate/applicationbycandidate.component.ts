@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Application } from '../../models/application.model';
 import { ApplicationService } from '../../services/application.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { CandidateService } from '../../services/candidate.service';
 import { JobofferService } from '../../services/joboffer.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-application',
+  selector: 'app-applicationbycandidate',
   standalone: true,
-  imports: [CommonModule,FormsModule],
-  templateUrl: './application.component.html',
-  styleUrl: './application.component.css'
+  imports: [CommonModule, FormsModule],
+  templateUrl: './applicationbycandidate.component.html',
+  styleUrl: './applicationbycandidate.component.css'
 })
-export class ApplicationComponent implements OnInit {
+export class ApplicationbycandidateComponent {
 applications: Application [] = []; // Store multiple applications
 selectedApplicationId: number | null = null;
   selectedApplication: Application | null = null;
@@ -22,31 +22,47 @@ selectedApplicationId: number | null = null;
   jobOfferTitles: { [key: number]: string } = {}; // Cache pour les titres des offres
   filteredApplications: Application[] = []; // Applications filtrées
   searchTerm: string = ''; // Terme de recherche
+  currentCandidateId: number | null = null;
+
 
 
 constructor(private applicationService: ApplicationService, private candidateservice: CandidateService, private jobOfferService: JobofferService){}
 ngOnInit(): void {
+  const storedUser = localStorage.getItem('currentUser');
+  if (storedUser) {
+    const user = JSON.parse(storedUser);
+    this.currentCandidateId = user.id;
+  }
+  
+
+
   this.loadApplications();
 }
 
 
 
-    loadApplications() {
-      this.applicationService.getApplications().subscribe(
-        {
-          next:(response) =>{
-            this.applications=response as Application[];
-            console.log('Liste des applications:', response);
-             // Charger les noms des candidats pour chaque application
-            this.loadCandidateNames();
-            this.loadJobOfferTitles(); // Charger les titres des offres
+loadApplications() {
+  this.applicationService.getApplications().subscribe({
+    next: (response) => {
+      const allApplications = response as Application[];
 
-          },
-          error:(error)=>{
-            console.error('Erreur lors du chargement des applications', error);
-          }
-        })
+      // Filtrer pour n'avoir que celles du candidat connecté
+      if (this.currentCandidateId !== null) {
+        this.applications = allApplications.filter(app => app.candidateId === this.currentCandidateId);
+      } else {
+        this.applications = []; // ou garde tout si besoin
+      }
+
+      console.log('Candidatures du candidat connecté :', this.applications);
+      this.loadCandidateNames();
+      this.loadJobOfferTitles();
+    },
+    error: (error) => {
+      console.error('Erreur lors du chargement des applications', error);
     }
+  });
+}
+
 
 
     getFileUrl(path: string): string {

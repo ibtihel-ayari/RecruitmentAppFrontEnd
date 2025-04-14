@@ -18,7 +18,7 @@ export class JobofferService {
 
   // Get job offer by ID
   getJobOffersById(id: number): Observable<JobOffer> {
-    return this.http.get<JobOffer>(`${this.apiUrl}/GetJobOfferById/${id}`);
+    return this.http.get<JobOffer>(`${this.apiUrl}/GetJobOfferById?id=${id}`);
   }
 
   // Create a new job offer

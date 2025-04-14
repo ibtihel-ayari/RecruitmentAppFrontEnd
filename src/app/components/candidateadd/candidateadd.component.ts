@@ -26,18 +26,22 @@ export class CandidateaddComponent  {
   constructor(private router:Router,private CandidateService : CandidateService) {}
 
 
-  
-onSubmit(): void {
-  this.CandidateService.createCandidate(this.candidate).subscribe(
-    (response) => {
-      console.log('Candidate created:', response);
-      this.router.navigate(['/candidate']);  // Redirect to 'candidate' page
-    },
-    (error) => {
-      console.error('Error creating candidate offer:', error);
-    }
-  );
+  onSubmit(): void {
+    console.log("Valeur envoyée :", this.candidate); // <-- AJOUTE ÇA
 
-}
+    // Convertir la chaîne en objet Date
+    this.candidate.birthDate = new Date(this.candidate.birthDate);
+  
+    this.CandidateService.createCandidate(this.candidate).subscribe(
+      (response) => {
+        console.log('Candidate created:', response);
+        this.router.navigate(['/candidate']);  // Redirect to 'candidate' page
+      },
+      (error) => {
+        console.error('Error creating candidate offer:', error);
+      }
+    );
+  }
+  
 }
 

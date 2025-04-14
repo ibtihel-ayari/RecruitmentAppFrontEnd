@@ -28,7 +28,7 @@ private apiUrl = 'https://localhost:44353/api';
 
   // Update an existing User
   updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/User/PutUser/${id}`, user);
+    return this.http.put<User>(`${this.apiUrl}/Auth/updateUser`, user);
   }
 
   // Delete a User

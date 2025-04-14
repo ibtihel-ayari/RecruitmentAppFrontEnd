@@ -12,6 +12,7 @@ import { ApplicationComponent } from './components/application/application.compo
 import { CandidateComponent } from './components/candidate/candidate.component';
 import { CandidateaddComponent } from './components/candidateadd/candidateadd.component';
 import { ApplicationaddComponent } from './components/applicationadd/applicationadd.component';
+import { ApplicationbycandidateComponent } from './components/applicationbycandidate/applicationbycandidate.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -27,6 +28,7 @@ export const routes: Routes = [
     { path: 'addcandidate', component: CandidateaddComponent },
     { path: 'application', component: ApplicationComponent },
     { path: 'addapplication', component: ApplicationaddComponent },
+    { path: 'myapplication', component: ApplicationbycandidateComponent },
     {path: 'addapplication/:id',loadComponent: () => import('./components/applicationadd/applicationadd.component').then(m => m.ApplicationaddComponent)},
       
 

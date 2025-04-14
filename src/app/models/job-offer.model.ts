@@ -4,7 +4,7 @@ export interface JobOffer {
     id: number;
     title: string;
     description?: string;
-    location?: string;
+    location: string;
     requirements?: string;
     publicationDate: Date;
     applications: Application[];  

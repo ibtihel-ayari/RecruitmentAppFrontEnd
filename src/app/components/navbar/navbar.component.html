@@ -16,19 +16,19 @@
                     <span class="material-icons">group</span>
                     <span class="ml-3">Candidats</span>
                 </a>
-                <a  *ngIf="isAdmin() || isRH ||isCandidate()"  href="/joboffer" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">
+                <a  *ngIf="isAdmin() || isRH() ||isCandidate()"  href="/joboffer" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">
                   <span class="material-icons">work</span> 
                   <span class="ml-3">Offres d'emploi</span>
               </a>
             
               
-              <a *ngIf="isAdmin() || isRH"
+              <a *ngIf="isAdmin() || isRH() "
               href="/application" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">
                   <span class="material-icons">assignment</span> 
                   <span class="ml-3">Candidatures</span>
               </a>
               
-              <a *ngIf="isCandidate()" href="/dashboard" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">
+              <a *ngIf="isCandidate()" href="/myapplication" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">
                   <span class="material-icons">fact_check</span> 
                   <span class="ml-3">Mes Candidatures</span>
               </a>

@@ -21,6 +21,12 @@ private ApiUrl = 'https://localhost:44353/api/';
   createCandidate(Candidate: Candidate):Observable<Candidate>{
     return this.http.post<Candidate>(`${this.ApiUrl}Auth/registerCandidate`,Candidate);
   }
+  //update Candidate
+ updateUser(id: number, candidate: Candidate): Observable<Candidate> {
+    return this.http.put<Candidate>(`${this.ApiUrl}/Auth/updateCandidate`, candidate);
+  }
+
+
   //delete Candidate
   deleteCandidate(id:number):Observable<any>{
     return this.http.delete<any>(`${this.ApiUrl}Candidate/DeleteCandidate?candidateId=${id}`)

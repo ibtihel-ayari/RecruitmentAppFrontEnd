@@ -16,6 +16,9 @@ import { AuthService } from '../../services/auth.service';
 export class JobofferComponent implements OnInit {
   jobOffers: JobOffer[] = []; // Store multiple job offers
   selectedJobOfferId: number | null = null;
+  searchLocation: string = '';
+  filteredJobOffers: JobOffer[] = [];
+
 
   constructor(private jobOfferService: JobofferService, private auth: AuthService) {}
 
@@ -27,7 +30,10 @@ export class JobofferComponent implements OnInit {
     this.jobOfferService.getJobOffer().subscribe(
       (data: JobOffer[]) => {
         this.jobOffers = data;
+        this.filteredJobOffers = [...data]; // initialiser avec toutes les offres
         console.log('Liste des offres d\'emploi:', this.jobOffers);
+
+
       },
       (error) => {
         console.error('Erreur lors du chargement des offres d\'emploi', error);
@@ -51,7 +57,12 @@ export class JobofferComponent implements OnInit {
       });
     }
   }
-
+  filterByLocation() {
+    const search = this.searchLocation.toLowerCase();
+    this.filteredJobOffers = this.jobOffers.filter(offer =>
+      offer.location.toLowerCase().includes(search)
+    );
+  }
 
   isAdmin() : boolean {
     return this.auth.isAdmin()
