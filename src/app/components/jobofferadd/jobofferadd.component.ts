@@ -18,6 +18,11 @@ joboffer: JobOffer = {
   description: "",
   location: "",
   requirements: "",
+  technicalSkills: "",
+  workExperience: "",
+  academicBackground: "",
+  languagesSpoken: "",
+  type: "",  // Stage ou Emploi
   publicationDate: new Date(),
   applications: []
 };

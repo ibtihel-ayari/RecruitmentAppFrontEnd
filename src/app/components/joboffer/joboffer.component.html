@@ -53,10 +53,15 @@
       </div>
       
       <h6 class="text-xl font-semibold mb-2 text-blue-900">{{ jobOffer.title }}</h6>
-      <p class="text-gray-600 mb-3"><strong>Description :</strong> {{ jobOffer.description }}</p>
-      <p class="text-gray-600 mb-3"><strong>Localisation :</strong> {{ jobOffer.location }}</p>
-      <p class="text-gray-600 mb-3"><strong>Exigences :</strong> {{ jobOffer.requirements }}</p>
-      <p class="text-gray-500 text-sm mb-3"><strong>Publié le :</strong> {{ jobOffer.publicationDate | date }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Description :</strong> {{ jobOffer.description }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Localisation :</strong> {{ jobOffer.location }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Exigences :</strong> {{ jobOffer.requirements }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Compétences techniques :</strong> {{ jobOffer.technicalSkills }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Expérience professionnelle :</strong> {{ jobOffer.workExperience }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Formation académique :</strong> {{ jobOffer.academicBackground }}</p>
+    <p class="text-gray-600 text-sm mb-2"><strong>Langues maîtrisées :</strong> {{ jobOffer.languagesSpoken }}</p>
+    <p class="text-gray-500 text-xs mb-3"><strong>Publié le :</strong> {{ jobOffer.publicationDate | date }}</p>
+
 
       <!-- Modifier Link -->
       <a *ngIf="isCandidate()" [routerLink]="['/addapplication', jobOffer.id]" class="text-blue-500 hover:text-blue-700 font-medium" >Postuler</a>

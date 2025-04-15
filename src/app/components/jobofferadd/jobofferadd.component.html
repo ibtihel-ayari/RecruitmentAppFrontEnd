@@ -14,9 +14,25 @@
         
         <label class="block mt-2">Exigences:</label>
         <input type="text" [(ngModel)]="joboffer.requirements" name="requirements" class="w-full border rounded px-2 py-1" placeholder="Entrez les exigences" required>
-        
-        <label class="block mt-2">Date de publication:</label>
-        <input type="date" [(ngModel)]="joboffer.publicationDate" name="publicationDate" class="w-full border rounded px-2 py-1" required>
+        <label class="block mt-2">Compétences techniques:</label>
+        <input type="text" [(ngModel)]="joboffer.technicalSkills" name="technicalSkills" class="w-full border rounded px-2 py-1" placeholder="Ex: Java, Angular, MySQL" required>
+  
+        <label class="block mt-2">Expérience professionnelle:</label>
+        <input type="text" [(ngModel)]="joboffer.workExperience" name="workExperience" class="w-full border rounded px-2 py-1" placeholder="Ex: 2 ans dans le développement web" required>
+  
+        <label class="block mt-2">Formation académique:</label>
+        <input type="text" [(ngModel)]="joboffer.academicBackground" name="academicBackground" class="w-full border rounded px-2 py-1" placeholder="Ex: Bac+5 en informatique" required>
+  
+        <label class="block mt-2">Langues maîtrisées:</label>
+        <input type="text" [(ngModel)]="joboffer.languagesSpoken" name="languagesSpoken" class="w-full border rounded px-2 py-1" placeholder="Ex: Français, Anglais" required>
+  
+        <label class="block mt-2">Type d'offre:</label>
+        <select [(ngModel)]="joboffer.type" name="type" class="w-full border rounded px-2 py-1" required>
+          <option value="" disabled selected>Choisissez un type</option>
+          <option value="Stage">Stage</option>
+          <option value="Emploi">Emploi</option>
+        </select>
+       
         
         <div class="flex justify-between mt-4">
           <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter</button>
