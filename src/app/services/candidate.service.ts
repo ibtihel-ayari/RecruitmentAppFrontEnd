@@ -22,8 +22,8 @@ private ApiUrl = 'https://localhost:44353/api/';
     return this.http.post<Candidate>(`${this.ApiUrl}Auth/registerCandidate`,Candidate);
   }
   //update Candidate
- updateUser(id: number, candidate: Candidate): Observable<Candidate> {
-    return this.http.put<Candidate>(`${this.ApiUrl}/Auth/updateCandidate`, candidate);
+ updateCandidate(id: number, candidate: Candidate): Observable<Candidate> {
+    return this.http.put<Candidate>(`${this.ApiUrl}Auth/updateCandidate`, candidate);
   }
 
 

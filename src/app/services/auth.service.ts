@@ -38,14 +38,22 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}login`, { email, password }).pipe(
       map((response) => {
-        const user = response.user || response.candidate;
-        if (user) {
-          // Déterminez le rôle en fonction de la structure de l'objet
-          const role = response.user ? 'Admin' : 'Candidate';
-          const userWithRole = { ...user, role };
+        let userWithRole;
+  
+        if (response.user) {
+          // L'utilisateur peut être Admin ou RH, on utilise le champ `role` venant de l'API
+          const role = response.user.role; // Suppose que c'est "Admin" ou "RH"
+          userWithRole = { ...response.user, role };
+        } else if (response.candidate) {
+          // Candidat n'a qu'un seul rôle
+          userWithRole = { ...response.candidate, role: 'Candidate' };
+        }
+  
+        if (userWithRole) {
           localStorage.setItem('currentUser', JSON.stringify(userWithRole));
           this.currentUserSubject.next(userWithRole);
         }
+  
         return response;
       }),
       catchError((error) => {

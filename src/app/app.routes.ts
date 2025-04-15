@@ -13,6 +13,7 @@ import { CandidateComponent } from './components/candidate/candidate.component';
 import { CandidateaddComponent } from './components/candidateadd/candidateadd.component';
 import { ApplicationaddComponent } from './components/applicationadd/applicationadd.component';
 import { ApplicationbycandidateComponent } from './components/applicationbycandidate/applicationbycandidate.component';
+import { CandidateupdateComponent } from './components/candidateupdate/candidateupdate.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
     { path: 'updateuser/:id', component: UserupdateComponent },
     { path: 'candidate', component: CandidateComponent },
     { path: 'addcandidate', component: CandidateaddComponent },
+    { path: 'updatecandidate/:id', component: CandidateupdateComponent },
     { path: 'application', component: ApplicationComponent },
     { path: 'addapplication', component: ApplicationaddComponent },
     { path: 'myapplication', component: ApplicationbycandidateComponent },
