@@ -38,7 +38,6 @@ getApplications():Observable<Application[]>{
     
     // Append other properties
     formData.append('CandidateId', application.candidateId.toString());
-    formData.append('UserId', application.userId.toString());
     formData.append('JobOfferId', application.jobOfferId.toString());
     formData.append('Status', application.status);
     formData.append('IsValidated', application.isValidated.toString());

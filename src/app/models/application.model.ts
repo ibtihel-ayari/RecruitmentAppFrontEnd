@@ -9,7 +9,6 @@ export interface Application {
     status: string;
     isValidated: boolean;
     candidateId: number;
-    userId: number;
     jobOfferId: number;
    // quiz?: Quiz; // Optional Quiz object
   }

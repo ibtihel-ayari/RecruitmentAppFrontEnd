@@ -23,7 +23,6 @@ export class ApplicationaddComponent {
     status: "En attente",
     isValidated: false,
     candidateId: 0, // sera mis à jour automatiquement
-    userId: 0,
     jobOfferId: 0,
   }
 
