@@ -20,7 +20,10 @@
                   <span class="material-icons">work</span> 
                   <span class="ml-3">Offres d'emploi</span>
               </a>
-            
+              <a  *ngIf="isAdmin() || isRH() ||isCandidate()"  href="/internoffer" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">
+                <span class="material-icons">work</span> 
+                <span class="ml-3">Offres de stage</span>
+            </a>
               
               <a *ngIf="isAdmin() || isRH() "
               href="/application" class="flex items-center py-3 px-4 text-gray-700 hover:bg-gray-500 hover:text-white rounded-lg transition-all">

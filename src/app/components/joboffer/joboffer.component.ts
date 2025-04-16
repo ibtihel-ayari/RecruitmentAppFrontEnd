@@ -29,6 +29,20 @@ export class JobofferComponent implements OnInit {
   loadJobOffers() {
     this.jobOfferService.getJobOffer().subscribe(
       (data: JobOffer[]) => {
+        // Ne garder que les offres de type "Emploi"
+        this.jobOffers = data.filter(offer => offer.type === 'Emploi');
+        this.filteredJobOffers = [...this.jobOffers]; // initialiser avec les offres filtrées
+        console.log('Offres de type Emploi:', this.jobOffers);
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des offres d\'emploi', error);
+      }
+    );
+  }
+  
+  loadJobOffer() {
+    this.jobOfferService.getJobOffer().subscribe(
+      (data: JobOffer[]) => {
         this.jobOffers = data;
         this.filteredJobOffers = [...data]; // initialiser avec toutes les offres
         console.log('Liste des offres d\'emploi:', this.jobOffers);

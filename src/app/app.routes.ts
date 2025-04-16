@@ -14,6 +14,7 @@ import { CandidateaddComponent } from './components/candidateadd/candidateadd.co
 import { ApplicationaddComponent } from './components/applicationadd/applicationadd.component';
 import { ApplicationbycandidateComponent } from './components/applicationbycandidate/applicationbycandidate.component';
 import { CandidateupdateComponent } from './components/candidateupdate/candidateupdate.component';
+import { InternofferComponent } from './components/internoffer/internoffer.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -22,6 +23,7 @@ export const routes: Routes = [
     { path: 'navbar', component: NavbarComponent },
     { path: 'joboffer', component: JobofferComponent },
     { path: 'addjoboffer', component: JobofferaddComponent },
+    { path: 'internoffer', component: InternofferComponent },
     { path: 'user', component: UserComponent },
     { path: 'adduser', component: UseraddComponent },
     { path: 'updateuser/:id', component: UserupdateComponent },
