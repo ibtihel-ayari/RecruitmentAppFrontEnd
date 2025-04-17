@@ -1,0 +1,56 @@
+<div class="ml-72 p-8">
+  <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-5xl">
+    
+    <div class="flex items-center justify-between mb-6">
+      <h5 class="text-lg font-semibold text-gray-800">Meilleures candidatures</h5>
+      <button (click)="goBack()" 
+              class="bg-gray-100 border border-gray-300 rounded-full p-2 hover:bg-gray-200 transition shadow">
+        <svg xmlns="http://www.w3.org/2000/svg" 
+             viewBox="0 0 24 24" fill="currentColor" 
+             class="w-6 h-6 text-gray-700">
+          <path d="M10 19l-7-7 7-7v4h6a4 4 0 014 4v1a1 1 0 01-1 1h-1v-2a2 2 0 00-2-2h-6v4z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="mb-6 flex flex-col sm:flex-row items-start sm:items-center sm:space-x-4 space-y-4 sm:space-y-0">
+      <div class="flex items-center space-x-2">
+        <label for="topCount" class="font-medium text-gray-700">Afficher le top :</label>
+        <input id="topCount" type="number" min="1" [(ngModel)]="topCount"
+               class="border border-gray-300 rounded-lg px-3 py-2 w-24 focus:outline-none focus:ring focus:border-blue-300" />
+      </div>
+
+      <button (click)="getTopApplications()" 
+              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition">
+        Lancer l’analyse
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="text-blue-600 font-medium mb-4">
+      🔄 Analyse en cours...
+    </div>
+
+    <table *ngIf="!isLoading && applications.length > 0"
+           class="min-w-full table-auto border border-gray-200 shadow-sm rounded-xl overflow-hidden">
+      <thead class="bg-blue-50 text-gray-800 text-sm">
+        <tr>
+          <th class="border px-4 py-3 font-medium">Candidat</th>
+          <th class="border px-4 py-3 font-medium">Offre d’emploi</th>
+          <th class="border px-4 py-3 font-medium">Score de similarité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of applications" class="hover:bg-gray-50 transition">
+          <td class="border px-4 py-3">{{ app.candidateName }}</td>
+          <td class="border px-4 py-3">{{ app.jobOfferTitle }}</td>
+          <td class="border px-4 py-3">{{ app.similarityScore | number: '1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p *ngIf="!isLoading && applications.length === 0" class="text-gray-600 italic mt-4">
+      Aucune candidature trouvée pour cette offre.
+    </p>
+
+  </div>
+</div>
