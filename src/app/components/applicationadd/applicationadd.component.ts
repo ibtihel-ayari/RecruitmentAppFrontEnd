@@ -82,6 +82,9 @@ export class ApplicationaddComponent {
       this.application.photo = input.files[0];
     }
   }
+  goBack(): void {
+    this.router.navigate(['/joboffer']); 
+  }
 
 }
  

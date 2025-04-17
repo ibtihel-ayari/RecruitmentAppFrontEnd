@@ -15,6 +15,7 @@ import { ApplicationaddComponent } from './components/applicationadd/application
 import { ApplicationbycandidateComponent } from './components/applicationbycandidate/applicationbycandidate.component';
 import { CandidateupdateComponent } from './components/candidateupdate/candidateupdate.component';
 import { InternofferComponent } from './components/internoffer/internoffer.component';
+import { ApplicationtopComponent } from './components/applicationtop/applicationtop.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -34,7 +35,9 @@ export const routes: Routes = [
     { path: 'addapplication', component: ApplicationaddComponent },
     { path: 'myapplication', component: ApplicationbycandidateComponent },
     {path: 'addapplication/:id',loadComponent: () => import('./components/applicationadd/applicationadd.component').then(m => m.ApplicationaddComponent)},
-      
+    { path: 'topapplication', component: ApplicationtopComponent },
+    {path: 'topapplication/:id',loadComponent: () => import('./components/applicationtop/applicationtop.component').then(m => m.ApplicationtopComponent)},
+  
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];

@@ -65,6 +65,10 @@
   
         <!-- Modifier Link -->
         <a *ngIf="isCandidate()" [routerLink]="['/addapplication', jobOffer.id]" class="text-blue-500 hover:text-blue-700 font-medium" >Postuler</a>
+     <!-- Bouton pour voir les top candidatures -->
+  <a *ngIf="isAdmin() || isRH()" [routerLink]="['/topapplication', jobOffer.id]" class="text-blue-500 hover:text-blue-700 font-medium"> Analyser les candidatures </a>
+  
+
       </div>
     </div>
   </div>

@@ -18,6 +18,8 @@ export class JobofferComponent implements OnInit {
   selectedJobOfferId: number | null = null;
   searchLocation: string = '';
   filteredJobOffers: JobOffer[] = [];
+  showTopApplicationsForJob: number | null = null; 
+
 
 
   constructor(private jobOfferService: JobofferService, private auth: AuthService) {}
@@ -77,6 +79,8 @@ export class JobofferComponent implements OnInit {
       offer.location.toLowerCase().includes(search)
     );
   }
+
+
 
   isAdmin() : boolean {
     return this.auth.isAdmin()
