@@ -40,4 +40,7 @@ export class UseraddComponent {
       );
     }
   }
+  goBack(): void {
+    this.router.navigate(['/user']); 
+  }
 }

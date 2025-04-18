@@ -39,7 +39,9 @@ export class UserupdateComponent implements OnInit {
     }
   }
 
-  cancelEdit() {
-    this.router.navigate(['/user']);  // Redirect back without saving
+  
+
+  goBack(): void {
+    this.router.navigate(['/user']); 
   }
 }
