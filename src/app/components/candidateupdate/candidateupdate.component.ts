@@ -39,7 +39,7 @@ candidateId!: number;
     }
   }
 
-  cancelEdit() {
-    this.router.navigate(['/candidate']);  // Redirect back without saving
+  goBack(): void {
+    this.router.navigate(['/candidate']); 
   }
 }

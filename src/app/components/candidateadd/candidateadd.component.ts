@@ -42,6 +42,9 @@ export class CandidateaddComponent  {
       }
     );
   }
+  goBack(): void {
+    this.router.navigate(['/candidate']); 
+  }
   
 }
 
