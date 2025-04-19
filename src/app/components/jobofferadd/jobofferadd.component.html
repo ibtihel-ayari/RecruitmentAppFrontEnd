@@ -1,44 +1,59 @@
-<div class="container mx-auto p-4">
-    <h2 class="text-2xl font-bold text-center">Ajouter Une Offre</h2>
-  
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96 mx-auto">
-      <form #jobForm="ngForm" (ngSubmit)="onSubmit()">
-        <label class="block mb-2">Titre:</label>
-        <input type="text" [(ngModel)]="joboffer.title" name="title" class="w-full border rounded px-2 py-1" placeholder="Entrez le titre" required>
-        
-        <label class="block mt-2">Description:</label>
-        <input type="text" [(ngModel)]="joboffer.description" name="description" class="w-full border rounded px-2 py-1" placeholder="Entrez la description" required>
-        
-        <label class="block mt-2">Lieu:</label>
-        <input type="text" [(ngModel)]="joboffer.location" name="location" class="w-full border rounded px-2 py-1" placeholder="Entrez l'emplacement" required>
-        
-        <label class="block mt-2">Exigences:</label>
-        <input type="text" [(ngModel)]="joboffer.requirements" name="requirements" class="w-full border rounded px-2 py-1" placeholder="Entrez les exigences" required>
-        <label class="block mt-2">Compétences techniques:</label>
-        <input type="text" [(ngModel)]="joboffer.technicalSkills" name="technicalSkills" class="w-full border rounded px-2 py-1" placeholder="Ex: Java, Angular, MySQL" required>
-  
-        <label class="block mt-2">Expérience professionnelle:</label>
-        <input type="text" [(ngModel)]="joboffer.workExperience" name="workExperience" class="w-full border rounded px-2 py-1" placeholder="Ex: 2 ans dans le développement web" required>
-  
-        <label class="block mt-2">Formation académique:</label>
-        <input type="text" [(ngModel)]="joboffer.academicBackground" name="academicBackground" class="w-full border rounded px-2 py-1" placeholder="Ex: Bac+5 en informatique" required>
-  
-        <label class="block mt-2">Langues maîtrisées:</label>
-        <input type="text" [(ngModel)]="joboffer.languagesSpoken" name="languagesSpoken" class="w-full border rounded px-2 py-1" placeholder="Ex: Français, Anglais" required>
-  
-        <label class="block mt-2">Type d'offre:</label>
-        <select [(ngModel)]="joboffer.type" name="type" class="w-full border rounded px-2 py-1" required>
-          <option value="" disabled selected>Choisissez un type</option>
-          <option value="Stage">Stage</option>
-          <option value="Emploi">Emploi</option>
-        </select>
-       
-        
-        <div class="flex justify-between mt-4">
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Ajouter</button>
-          <button type="button" href="/joboffer" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Annuler</button>
+<div class="ml-72 p-8">
+  <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-5xl">
+    <form #jobForm="ngForm" (ngSubmit)="onSubmit()">
+
+      <div class="flex items-center justify-between mb-6">
+        <h6 class="text-sm font-semibold text-gray-800">Ajouter une offre</h6>
+        <div class="flex space-x-2">
+          <button type="submit" class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition shadow">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="currentColor" viewBox="0 0 24 24"
+                 class="w-5 h-5">
+              <path d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a1 1 0 001-1V7.41a1 1 0 00-.29-.7l-3.42-3.42A1 1 0 0017 3zm0 2l3 3h-3V5zM12 19a2 2 0 110-4 2 2 0 010 4zm-4-6V5h8v8H8z" />
+            </svg>
+          </button>
+          <button type="button" (click)="goBack()"
+                  class="bg-gray-100 border border-gray-300 rounded-full p-2 hover:bg-gray-200 transition shadow">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 24 24" fill="currentColor"
+                 class="w-6 h-6 text-gray-700">
+              <path d="M10 19l-7-7 7-7v4h6a4 4 0 014 4v1a1 1 0 01-1 1h-1v-2a2 2 0 00-2-2h-6v4z" />
+            </svg>
+          </button>
         </div>
-      </form>
-    </div>
+      </div>
+
+      <label class="block mb-2">Titre:</label>
+      <input type="text" [(ngModel)]="joboffer.title" name="title" class="w-full border rounded px-2 py-1" placeholder="Entrez le titre" required>
+
+      <label class="block mt-2">Description:</label>
+      <input type="text" [(ngModel)]="joboffer.description" name="description" class="w-full border rounded px-2 py-1" placeholder="Entrez la description" required>
+
+      <label class="block mt-2">Lieu:</label>
+      <input type="text" [(ngModel)]="joboffer.location" name="location" class="w-full border rounded px-2 py-1" placeholder="Entrez l'emplacement" required>
+
+      <label class="block mt-2">Exigences:</label>
+      <input type="text" [(ngModel)]="joboffer.requirements" name="requirements" class="w-full border rounded px-2 py-1" placeholder="Entrez les exigences" required>
+
+      <label class="block mt-2">Compétences techniques:</label>
+      <input type="text" [(ngModel)]="joboffer.technicalSkills" name="technicalSkills" class="w-full border rounded px-2 py-1" placeholder="Ex: Java, Angular, MySQL" required>
+
+      <label class="block mt-2">Expérience professionnelle:</label>
+      <input type="text" [(ngModel)]="joboffer.workExperience" name="workExperience" class="w-full border rounded px-2 py-1" placeholder="Ex: 2 ans dans le développement web" required>
+
+      <label class="block mt-2">Formation académique:</label>
+      <input type="text" [(ngModel)]="joboffer.academicBackground" name="academicBackground" class="w-full border rounded px-2 py-1" placeholder="Ex: Bac+5 en informatique" required>
+
+      <label class="block mt-2">Langues maîtrisées:</label>
+      <input type="text" [(ngModel)]="joboffer.languagesSpoken" name="languagesSpoken" class="w-full border rounded px-2 py-1" placeholder="Ex: Français, Anglais" required>
+
+      <label class="block mt-2">Type d'offre:</label>
+      <select [(ngModel)]="joboffer.type" name="type" class="w-full border rounded px-2 py-1" required>
+        <option value="" disabled selected>Choisissez un type</option>
+        <option value="Stage">Stage</option>
+        <option value="Emploi">Emploi</option>
+      </select>
+
+    </form>
   </div>
-  
+</div>

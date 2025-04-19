@@ -40,4 +40,6 @@ onSubmit(): void {
   );
 
 }
+goBack(): void {
+  this.router.navigate(['/joboffer']);}
 }
