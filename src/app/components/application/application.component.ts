@@ -145,5 +145,7 @@ ngOnInit(): void {
       return offerTitle.includes(searchTermLower);
     });
   }
+ 
+  
         
 }

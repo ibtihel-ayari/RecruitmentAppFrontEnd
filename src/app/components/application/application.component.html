@@ -51,7 +51,7 @@
         {{ successMessage }}
       </div>
       
-      <table class="w-full border-collapse border border-gray-200">
+      <table class="w-full border-collapse border border-gray-200 text-sm">
         <thead>
           <tr class="bg-gray-100">
             <th class="text-lg border px-4 py-2"></th>
@@ -60,7 +60,10 @@
             <th class="border px-4 py-2">Photo</th>
             <th class="border px-4 py-2">Date de soumission</th>
             <th class="border px-4 py-2">Offre</th>
+            <th class="border px-4 py-2">Pré-sélection</th>
+
             <th class="border px-4 py-2">Status</th>
+
           
 
             
@@ -80,7 +83,17 @@
             </td>
             <td class="border px-4 py-2">{{ application.submissionDate | date}}</td>
             <td class="border px-4 py-2">{{ getJobOfferTitle(application.jobOfferId) }}</td>
+            <td class="border px-4 py-2">
+              <span *ngIf="application.isValidated" class="text-green-800 font-semibold text-xs">Pré-sélectionné</span>
+              <span *ngIf="!application.isValidated" class="text-red-700  text-xs">Non pré-sélectionné</span>
+            </td>
+            
             <td class="border px-4 py-2">{{ application.status }}</td>
+        
+            
+            
+            
+            
             </tr>
         </tbody>
       </table>
