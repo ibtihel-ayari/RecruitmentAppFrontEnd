@@ -4,6 +4,7 @@ import { AnalysisService } from '../../services/analysis.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ApplicationService } from '../../services/application.service';
 
 @Component({
   selector: 'app-applicationtop',
@@ -17,9 +18,12 @@ export class ApplicationtopComponent implements OnInit {
   topCount: number = 5; 
   applications: ApplicationAnalysis[] = [];
   isLoading = false;
+  successMessage: string | null = null;
+
 
   constructor(
     private analysisService: AnalysisService,
+    private applicationService:ApplicationService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -59,4 +63,22 @@ export class ApplicationtopComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/joboffer']); 
   }
+
+  validateApplication(application: ApplicationAnalysis): void {
+    const updatedApp = { isValidated: true };
+  
+    this.applicationService.updateApplicationValidation(application.id, updatedApp)
+      .subscribe({
+        next: () => {
+          application.isValidated = true;
+          this.successMessage = 'Candidature validée avec succès !';
+          setTimeout(() => this.successMessage = '', 3000);
+        },
+        error: (err) => {
+          console.error('Erreur lors de la validation :', err);
+        }
+      });
+  }
+  
+  
 }

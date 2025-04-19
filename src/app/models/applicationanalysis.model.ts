@@ -3,4 +3,5 @@ export interface ApplicationAnalysis {
     similarityScore: number;
     candidateName: string;
     jobOfferTitle: string;
+    isValidated: boolean;
   }

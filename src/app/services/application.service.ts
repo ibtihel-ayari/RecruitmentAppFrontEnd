@@ -45,6 +45,16 @@ getApplications():Observable<Application[]>{
     return this.http.post<Application>(`${this.apiUrl}/PostApplication`, formData);
   }
 
+  //update la validation de la candidature
+updateApplicationValidation(id: number, application: Partial<Application>): Observable<Application> {
+  return this.http.patch<Application>(`${this.apiUrl}/UpdateApplicationValidation/${id}`, application);
+}
+
+      //update application status
+   updateapplicationstatus(id: number, application: Partial<Application>): Observable<Application> {
+    return this.http.put<Application>(`${this.apiUrl}/UpdateApplicationStatus/${id}`, application);
+  }
+
 
   //Delete an application
   deleteApplication(id: number):Observable<void>{
