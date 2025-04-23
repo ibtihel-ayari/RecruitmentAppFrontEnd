@@ -30,25 +30,30 @@ private apiUrl = 'https://localhost:44353/api';
   updateUsers(id: number, user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/Auth/updateUser`, user);
   }
-  updateUser(id: number, user: User): Observable<any> {
+  updateUser(id: number, userData: any, photo?: File): Observable<any> {
     const formData = new FormData();
     
-    // Ajoutez tous les champs au FormData
+    // Ajouter toutes les propriétés de l'utilisateur
     formData.append('Id', id.toString());
-    formData.append('FirstName', user.firstName);
-    formData.append('LastName', user.lastName);
-    formData.append('Email', user.email);
-    formData.append('Password', user.password || '');
-    formData.append('Role', user.role);
-    
-    // Si vous avez une photo à uploader
-    if (user.photo) {
-      formData.append('Photo', user.photo);
+    formData.append('FirstName', userData.firstName);
+    formData.append('LastName', userData.lastName);
+    formData.append('Email', userData.email);
+    if (userData.password) {
+      formData.append('Password', userData.password);
     }
-  
+    if (userData.role) {
+      formData.append('Role', userData.role);
+    }
+    
+    // Ajouter la photo si elle existe
+    if (photo) {
+      formData.append('Photo', photo);
+    }
+
     return this.http.put(`${this.apiUrl}/Auth/updateUser`, formData);
   }
 
+  
   // Delete a User
   deleteUser(id: number): Observable<void> {
    return this.http.delete<void>(`${this.apiUrl}/User/DeleteUser?userId=${id}`); 
