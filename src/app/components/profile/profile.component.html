@@ -1,0 +1,44 @@
+<div class="ml-72 p-8">
+    <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-5xl" *ngIf="currentUser">
+      <form>
+        <div class="flex items-center justify-between mb-6">
+          <h6 class="text-sm font-semibold text-gray-800">Modifier le profil</h6>
+          <div class="flex gap-2">
+            <button (click)="updateProfile()" type="button" class="bg-green-900 text-white p-2 rounded hover:bg-green-800 transition shadow">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="w-5 h-5">
+                <path d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a1 1 0 001-1V7.41a1 1 0 00-.29-.7l-3.42-3.42A1 1 0 0017 3zm0 2l3 3h-3V5zM12 19a2 2 0 110-4 2 2 0 010 4zm-4-6V5h8v8H8z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+  
+        <div *ngIf="successMessage" class="text-green-600 mb-4">{{ successMessage }}</div>
+  
+        <label class="block mb-2">Prénom:</label>
+        <input type="text" [(ngModel)]="updatedUserData.firstName" name="firstName" class="w-full border rounded px-2 py-1" />
+  
+        <label class="block mt-2">Nom:</label>
+        <input type="text" [(ngModel)]="updatedUserData.lastName" name="lastName" class="w-full border rounded px-2 py-1" />
+  
+        <label class="block mt-2">Email:</label>
+        <input type="email" [(ngModel)]="updatedUserData.email" name="email" class="w-full border rounded px-2 py-1" />
+  
+        <label class="block mt-2">Mot de passe:</label>
+        <input type="password" [(ngModel)]="updatedUserData.password" name="password" class="w-full border rounded px-2 py-1" />
+  
+        <label class="block mt-2">Rôle:</label>
+        <select [(ngModel)]="updatedUserData.role" name="role" class="w-full border rounded px-2 py-1">
+          <option value="candidate">Candidat</option>
+          <option value="admin">Admin</option>
+          <option value="recruiter">Recruteur</option>
+        </select>
+  
+       
+  
+        <label class="block mt-2">Photo de profil:</label>
+        <input type="file" (change)="onFileSelected($event)" class="w-full border rounded px-2 py-1" />
+    </form>
+    </div>
+  </div>
+  
+  
