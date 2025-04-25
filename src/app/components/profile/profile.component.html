@@ -9,10 +9,34 @@
                 <path d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a1 1 0 001-1V7.41a1 1 0 00-.29-.7l-3.42-3.42A1 1 0 0017 3zm0 2l3 3h-3V5zM12 19a2 2 0 110-4 2 2 0 010 4zm-4-6V5h8v8H8z"/>
               </svg>
             </button>
+            <button type="button" (click)="goBack()" class="bg-gray-100 border border-gray-300 rounded-full p-2 hover:bg-gray-200 transition shadow">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-gray-700">
+                  <path d="M10 19l-7-7 7-7v4h6a4 4 0 014 4v1a1 1 0 01-1 1h-1v-2a2 2 0 00-2-2h-6v4z" />
+                </svg>
+              </button>
           </div>
         </div>
   
         <div *ngIf="successMessage" class="text-green-600 mb-4">{{ successMessage }}</div>
+
+
+        <label class="block mt-2">Photo de profil:</label>
+        <div class="mb-4 text-center">
+            <label for="fileInput">
+              <img
+                [src]="profilePicturePreview || getFileUrl(updatedUserData.photoPath!) || 'assets/default-avatar.png'"
+                alt="Photo de profil"
+                class="w-32 h-32 object-cover rounded-full cursor-pointer mx-auto hover:opacity-80 transition"
+              />
+            </label>
+            <input
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+              hidden
+            />
+          </div>
   
         <label class="block mb-2">Prénom:</label>
         <input type="text" [(ngModel)]="updatedUserData.firstName" name="firstName" class="w-full border rounded px-2 py-1" />
@@ -26,19 +50,12 @@
         <label class="block mt-2">Mot de passe:</label>
         <input type="password" [(ngModel)]="updatedUserData.password" name="password" class="w-full border rounded px-2 py-1" />
   
-        <label class="block mt-2">Rôle:</label>
-        <select [(ngModel)]="updatedUserData.role" name="role" class="w-full border rounded px-2 py-1">
-          <option value="candidate">Candidat</option>
-          <option value="admin">Admin</option>
-          <option value="recruiter">Recruteur</option>
-        </select>
-  
        
   
-        <label class="block mt-2">Photo de profil:</label>
-        <input type="file" (change)="onFileSelected($event)" class="w-full border rounded px-2 py-1" />
+        
+          
+        
     </form>
     </div>
   </div>
-  
   
