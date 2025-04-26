@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { User } from '../../models/user.model';
 import { Router } from '@angular/router';
+import { CandidateService } from '../../services/candidate.service';
+import { Candidate } from '../../models/candidate.models';
 
 @Component({
   selector: 'app-profile',
@@ -13,77 +15,100 @@ import { Router } from '@angular/router';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
-  currentUser: User | null = null;
-  updatedUserData: Partial<User> = {};
+  currentUser: User | Candidate | null = null;
+  updatedUserData: Partial<User & Candidate> = {}; // Combinaison des deux types
   profilePicture: File | null = null;
   successMessage: string | null = null;
+  errorMessage: string | null = null;
   profilePicturePreview: string | null = null;
 
-  constructor(private router:Router,private userService: UserService) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private candidateService: CandidateService
+  ) {}
 
   ngOnInit(): void {
+    this.loadUserData();
+  }
+
+  private loadUserData(): void {
     const storedUser = localStorage.getItem('currentUser');
     if (storedUser) {
       try {
         this.currentUser = JSON.parse(storedUser);
         this.updatedUserData = { ...this.currentUser };
+        if (this.currentUser?.photoPath) {
+          this.profilePicturePreview = this.getFileUrl(this.currentUser.photoPath);
+        }
       } catch (err) {
         console.error('Erreur lors du parsing JSON:', err);
+        this.errorMessage = 'Erreur lors du chargement des données utilisateur';
       }
-    } else {
-      console.error('Aucun utilisateur connecté.');
     }
   }
 
-  updateProfile() {
-    if (this.currentUser && this.currentUser.id && this.updatedUserData) {
-      const { id } = this.currentUser;
-      this.userService.updateUser(id, this.updatedUserData, this.profilePicture || undefined).subscribe({
-        next: (response) => {
-          this.successMessage = 'Profil mis à jour avec succès !';
-  
-          // ✅ Mette à jour le currentUser avec les nouvelles données du backend
-          const updatedUser = response.user;
-          this.currentUser = updatedUser;
-          this.updatedUserData = { ...updatedUser };
-          localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-  
-          // ✅ Met à jour la preview si la photo a été modifiée
-          if (updatedUser.photoPath) {
-            this.profilePicturePreview = this.getFileUrl(updatedUser.photoPath);
-          }
-  
-          setTimeout(() => (this.successMessage = null), 3000);
-        },
-        error: (error) => {
-          console.error('Erreur lors de la mise à jour du profil', error);
-          this.successMessage = 'Erreur lors de la mise à jour du profil.';
-        },
-      });
+  updateProfile(): void {
+    if (!this.currentUser?.id || !this.updatedUserData) {
+      this.errorMessage = 'Données utilisateur invalides';
+      return;
     }
+
+    const id = this.currentUser.id;
+    const isCandidate = this.currentUser.role === 'Candidate';
+
+    const serviceCall = isCandidate
+      ? this.candidateService.updateCandidate(id, this.updatedUserData, this.profilePicture || undefined)
+      : this.userService.updateUser(id, this.updatedUserData, this.profilePicture || undefined);
+
+    serviceCall.subscribe({
+      next: (response) => {
+        this.successMessage = 'Profil mis à jour avec succès !';
+        this.errorMessage = null;
+        
+        const updatedUser = response.user;
+        this.currentUser = updatedUser;
+        this.updatedUserData = { ...updatedUser };
+        localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+
+        if (updatedUser?.photoPath) {
+          this.profilePicturePreview = this.getFileUrl(updatedUser.photoPath);
+        }
+
+        setTimeout(() => this.successMessage = null, 3000);
+      },
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour du profil', error);
+        this.errorMessage = 'Erreur lors de la mise à jour du profil';
+        this.successMessage = null;
+      },
+    });
+
   }
-  
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.profilePicture = file;
-  
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.profilePicturePreview = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }}
-  getFileUrl(path: string | null): string {
+    if (input.files?.length) {
+      this.profilePicture = input.files[0];
+      this.previewProfilePicture();
+    }
+  }
+
+  private previewProfilePicture(): void {
+    if (!this.profilePicture) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.profilePicturePreview = reader.result as string;
+    };
+    reader.readAsDataURL(this.profilePicture);
+  }
+
+  getFileUrl(path: string | null | undefined): string {
     return path ? `https://localhost:44353${path}` : 'assets/default-avatar.png';
   }
-  
+
   goBack(): void {
-    this.router.navigate(['/dashboard']); 
+    this.router.navigate(['/dashboard']);
   }
-  
-  
 }
-
-

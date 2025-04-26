@@ -10,19 +10,24 @@
                 <span class="material-icons">notifications</span>
             </button>
              <!-- Profile Image -->
-<div
-class="w-8 h-8 bg-gray-300 rounded-full overflow-hidden cursor-pointer"
-(click)="toggleDropdown()"
->
-<img 
-  [src]="getUserPhoto()" 
-  alt="Profile" 
-  class="w-8 h-8 object-cover" 
-  (error)="handleImageError($event)"
-/>
-
-
-</div>
+             <div
+             class="w-8 h-8 bg-gray-300 rounded-full overflow-hidden cursor-pointer flex items-center justify-center"
+             (click)="toggleDropdown()"
+           >
+             <ng-container *ngIf="hasValidPhoto; else defaultIcon">
+               <img 
+                 [src]="getUserPhoto()" 
+                 alt="Profile" 
+                 class="w-8 h-8 object-cover" 
+                 (error)="handleImageError()"
+               />
+             </ng-container>
+           
+             <ng-template #defaultIcon>
+               <span class="material-icons text-white text-lg">account_circle</span>
+             </ng-template>
+           </div>
+           
 
 <!-- Username -->
 <span class="username mt-1 text-xs font-medium text-gray-700 uppercase">

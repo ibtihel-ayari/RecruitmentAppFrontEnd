@@ -12,19 +12,23 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit{
 
-  constructor(private auth: AuthService,private router:Router) { }
   user: any;
+  isDropdownOpen: boolean = false;
+  hasValidPhoto: boolean = true;
+
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.user = this.getUser();
+
+    // Vérifie si une photo est présente
+    this.hasValidPhoto = !!this.user?.photoPath;
   }
-  
-    // State for dropdown visibility
-    isDropdownOpen: boolean = false;
-    // Toggle dropdown visibility
-    toggleDropdown() {
-      this.isDropdownOpen = !this.isDropdownOpen;
-  } 
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
   getUser(): any {
     const user = localStorage.getItem('currentUser');
     if (user && user !== 'undefined') {
@@ -37,22 +41,23 @@ export class SidebarComponent implements OnInit{
     }
     return null;
   }
-  
-  logout():void{
-    this.auth.logout()
+
+  logout(): void {
+    this.auth.logout();
   }
+
   getUserPhoto(): string {
-    const user = this.getUser();
-    if (user && user.photoPath) {
-      return `https://localhost:44353${user.photoPath}`;  // Or your backend domain
+    if (this.user && this.user.photoPath) {
+      return `https://localhost:44353${this.user.photoPath}`;
     }
-    return 'assets/user.png';  // Fallback default image
+    return ''; // retourne vide si pas de photo, on gère ça dans le HTML
   }
-  handleImageError(event: any): void {
-    event.target.src = 'assets/user.png';
+
+  handleImageError(): void {
+    this.hasValidPhoto = false;
   }
+
   goProfile(): void {
-    this.router.navigate(['/profile']); 
+    this.router.navigate(['/profile']);
   }
-  
 }
