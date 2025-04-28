@@ -17,11 +17,13 @@ import { CandidateupdateComponent } from './components/candidateupdate/candidate
 import { InternofferComponent } from './components/internoffer/internoffer.component';
 import { ApplicationtopComponent } from './components/applicationtop/applicationtop.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { DashboardrhComponent } from './components/dashboardrh/dashboardrh.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'dashboardrh', component: DashboardrhComponent },
     { path: 'navbar', component: NavbarComponent },
     { path: 'joboffer', component: JobofferComponent },
     { path: 'addjoboffer', component: JobofferaddComponent },
