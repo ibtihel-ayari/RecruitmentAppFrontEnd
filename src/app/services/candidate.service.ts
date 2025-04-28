@@ -25,6 +25,7 @@ private ApiUrl = 'https://localhost:44353/api/';
  updateCandidates(id: number, candidate: Candidate): Observable<Candidate> {
     return this.http.put<Candidate>(`${this.ApiUrl}Auth/updateCandidate`, candidate);
   }
+  
   updateCandidate(id: number, userData: any, photo?: File): Observable<any> {
     const formData = new FormData();
     
