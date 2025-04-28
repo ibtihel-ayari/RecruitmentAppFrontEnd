@@ -18,12 +18,14 @@ import { InternofferComponent } from './components/internoffer/internoffer.compo
 import { ApplicationtopComponent } from './components/applicationtop/applicationtop.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardrhComponent } from './components/dashboardrh/dashboardrh.component';
+import { DashboardcandidateComponent } from './components/dashboardcandidate/dashboardcandidate.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'dashboard', component: DashboardComponent },
     { path: 'dashboardrh', component: DashboardrhComponent },
+    { path: 'dashboardcandidate', component: DashboardcandidateComponent },
     { path: 'navbar', component: NavbarComponent },
     { path: 'joboffer', component: JobofferComponent },
     { path: 'addjoboffer', component: JobofferaddComponent },
