@@ -63,20 +63,26 @@ export class ProfileComponent implements OnInit {
 
     serviceCall.subscribe({
       next: (response) => {
+        const updatedUser = this.currentUser?.role === 'Candidate' ? response.candidate : response.user;
+      
+        if (!updatedUser || !updatedUser.firstName || !updatedUser.lastName) {
+          console.error('Réponse update invalide:', updatedUser);
+          this.errorMessage = "Erreur lors de la mise à jour du profil.";
+          return;
+        }
+      
         this.successMessage = 'Profil mis à jour avec succès !';
         this.errorMessage = null;
-        
-        const updatedUser = response.user;
+      
         this.currentUser = updatedUser;
         this.updatedUserData = { ...updatedUser };
         localStorage.setItem('currentUser', JSON.stringify(updatedUser));
-
+      
         if (updatedUser?.photoPath) {
           this.profilePicturePreview = this.getFileUrl(updatedUser.photoPath);
         }
-
-        setTimeout(() => this.successMessage = null, 3000);
-      },
+      
+        setTimeout(() => {window.location.reload();  }, 1000);      },
       error: (error) => {
         console.error('Erreur lors de la mise à jour du profil', error);
         this.errorMessage = 'Erreur lors de la mise à jour du profil';

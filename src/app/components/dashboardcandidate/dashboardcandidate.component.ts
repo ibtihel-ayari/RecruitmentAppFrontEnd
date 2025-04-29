@@ -46,7 +46,7 @@ export class DashboardcandidateComponent {
   applicationProcessSteps = [
     { title: 'Création du compte', description: 'Inscription et accès à votre espace personnel.' },
     { title: 'Soumission de candidature', description: 'Postulez aux offres en déposant votre dossier.' },
-    { title: 'Pré-sélection par IA', description: 'Votre profil est analysé pour une première sélection.' },
+    { title: 'Pré-sélection', description: 'Votre profil est analysé pour une première sélection.' },
     { title: 'Passage du quiz', description: 'Testez vos compétences via un quiz personnalisé.' },
     { title: 'Entretiens RH et Technique', description: 'Rencontrez nos équipes pour valider votre candidature.' },
     { title: 'Décision finale', description: 'Réception de la réponse concernant votre candidature.' }
