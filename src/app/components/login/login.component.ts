@@ -32,10 +32,8 @@ export class LoginComponent {
              this.router.navigate(['/dashboardcandidate']);
              break;
            case 'Admin':
-             this.router.navigate(['/dashboard']); // Assuming you might need this too
+             this.router.navigate(['/dashboard']); 
              break;
-           default:
-             this.router.navigate(['/dashboard']); // Fallback for unknown roles
          }
        }
      },
