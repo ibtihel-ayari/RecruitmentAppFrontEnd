@@ -19,8 +19,26 @@ export class LoginComponent {
   login() {
     this.authService.login(this.email, this.password).subscribe({
       next: (user) => {
-        this.router.navigate(['/dashboard']);
-      },
+       // Get the current user from the auth service
+       const currentUser = this.authService.currentUserValue;
+        
+       // Redirect based on role
+       if (currentUser) {
+         switch(currentUser.role) {
+           case 'RH':
+             this.router.navigate(['/dashboardrh']);
+             break;
+           case 'Candidate':
+             this.router.navigate(['/dashboardcandidate']);
+             break;
+           case 'Admin':
+             this.router.navigate(['/dashboard']); // Assuming you might need this too
+             break;
+           default:
+             this.router.navigate(['/dashboard']); // Fallback for unknown roles
+         }
+       }
+     },
       error: (response) => {
         alert(JSON.stringify(response.error));
       },
