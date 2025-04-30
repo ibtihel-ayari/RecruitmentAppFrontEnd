@@ -8,23 +8,24 @@
         <p class="text-gray-500 text-sm">Suivi de vos candidatures et opportunités</p>
       </div>
   
-      <!-- Statistiques -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="rounded-2xl p-6 bg-gradient-to-br from-sky-500 to-blue-600 text-white shadow-md hover:scale-105 transition-all duration-300">
-          <p class="uppercase text-sm font-semibold tracking-wider">Candidatures envoyées</p>
-          <p class="text-4xl font-bold mt-4">{{ totalApplicationsSent }}</p>
-        </div>
-  
-        <div class="rounded-2xl p-6 bg-gradient-to-br from-amber-500 to-yellow-600 text-white shadow-md hover:scale-105 transition-all duration-300">
-          <p class="uppercase text-sm font-semibold tracking-wider">Candidatures en cours</p>
-          <p class="text-4xl font-bold mt-4">{{ ongoingApplications }}</p>
-        </div>
-  
-        <div class="rounded-2xl p-6 bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-md hover:scale-105 transition-all duration-300">
-          <p class="uppercase text-sm font-semibold tracking-wider">Score moyen aux quiz</p>
-          <p class="text-4xl font-bold mt-4">{{ averageQuizScore }}%</p>
-        </div>
-      </div>
+<!-- Statistiques -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="rounded-2xl p-6 bg-gradient-to-br from-blue-100 to-blue-300 text-blue-900 shadow hover:shadow-lg hover:scale-105 transition-all duration-300">
+    <p class="uppercase text-sm font-medium tracking-wide text-blue-700">Candidatures envoyées</p>
+    <p class="text-5xl font-semibold mt-2">{{ totalApplications }}</p>
+  </div>
+
+  <div class="rounded-2xl p-6 bg-gradient-to-br from-purple-100 to-purple-300 text-purple-900 shadow hover:shadow-lg hover:scale-105 transition-all duration-300">
+    <p class="uppercase text-sm font-medium tracking-wide text-purple-700">Candidatures en cours</p>
+    <p class="text-5xl font-semibold mt-2">{{ ongoingApplications }}</p>
+  </div>
+
+  <div class="rounded-2xl p-6 bg-gradient-to-br from-pink-100 to-pink-300 text-pink-900 shadow hover:shadow-lg hover:scale-105 transition-all duration-300">
+    <p class="uppercase text-sm font-medium tracking-wide text-pink-700">Score moyen aux quiz</p>
+    <p class="text-5xl font-semibold mt-2">{{ averageQuizScore }}%</p>
+  </div>
+</div>
+
   
       <!-- Graphique Barres -->
       <div class="bg-white rounded-3xl shadow-xl p-8 mt-8">

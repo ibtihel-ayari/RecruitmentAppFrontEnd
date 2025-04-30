@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
+import { Application } from '../../models/application.model';
+import { ApplicationService } from '../../services/application.service';
 
 @Component({
   selector: 'app-dashboardcandidate',
@@ -10,21 +12,27 @@ import { NgChartsModule } from 'ng2-charts';
   templateUrl: './dashboardcandidate.component.html',
   styleUrl: './dashboardcandidate.component.css'
 })
-export class DashboardcandidateComponent {
-  totalApplicationsSent: number = 0; // à remplir avec ton service
-  ongoingApplications: number = 0; // idem
-  averageQuizScore: number = 0; // idem
+export class DashboardcandidateComponent implements OnInit {
+  totalApplications: number = 0;
+  ongoingApplications: number = 0;
+  averageQuizScore: number = 0;
+  candidateData: any;
+  applications: Application[] = [];
+  currentCandidateId: number | null = null;
 
   barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Envoyé', 'En attente', 'Accepté', 'Refusé'],
+    labels: ['En cours', 'Accepté', 'Refusé'],
     datasets: [
       {
         label: 'Nombre de candidatures',
-        data: [12, 7, 5, 2], // exemple de données
-        backgroundColor: ['#3b82f6', '#f59e0b', '#10b981', '#ef4444'],
+        data: [0, 0, 0],
+        backgroundColor: ['rgba(165, 180, 252, 0.5)', 
+          'rgba(216, 180, 254, 0.5)', 
+          'rgba(251, 207, 232, 0.5)',  ], 
       },
     ],
   };
+  
 
   barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
@@ -51,5 +59,92 @@ export class DashboardcandidateComponent {
     { title: 'Entretiens RH et Technique', description: 'Rencontrez nos équipes pour valider votre candidature.' },
     { title: 'Décision finale', description: 'Réception de la réponse concernant votre candidature.' }
   ];
-  
+
+  constructor(private applicationService: ApplicationService) {}
+
+  ngOnInit(): void {
+    this.loadCandidateData();
+    this.loadApplications();
+  }
+
+  private loadCandidateData(): void {
+    const userData = localStorage.getItem('currentUser');
+    if (userData) {
+      this.candidateData = JSON.parse(userData);
+      this.currentCandidateId = this.candidateData.id;
+      console.log('Candidate data loaded:', this.candidateData);
+    }
+  }
+
+  private loadApplications(): void {
+    this.applicationService.getApplications().subscribe({
+      next: (response) => {
+        const allApplications = response as Application[];
+        
+        // Filtrer pour n'avoir que celles du candidat connecté
+        if (this.currentCandidateId !== null) {
+          this.applications = allApplications.filter(app => app.candidateId === this.currentCandidateId);
+        } else {
+          this.applications = [];
+        }
+
+        console.log('Applications loaded:', this.applications);
+        this.calculateStats();
+      },
+      error: (error) => {
+        console.error('Error loading applications', error);
+        // Optionnel: charger depuis le localStorage en cas d'erreur
+        const storedApplications = localStorage.getItem('candidateApplications');
+        if (storedApplications) {
+          this.applications = JSON.parse(storedApplications);
+          this.calculateStats();
+        }
+      }
+    });
+  }
+
+  private calculateStats(): void {
+    this.totalApplications = this.applications.length;
+    
+    // Compter les applications en cours (statut 'pending' ou autre selon votre modèle)
+    this.ongoingApplications = this.applications.filter(app => 
+      app.status === 'En attente' || app.status === 'En attente'
+    ).length;
+    
+    // Calcul du score moyen aux quiz
+    /*const quizScores = this.applications
+      .filter(app => app.similarityScore !== undefined && app.similarityScore !== null)
+      .map(app => app.similarityScore);
+      
+    this.averageQuizScore = quizScores.length > 0 
+      ? Math.round(quizScores.reduce((a, b) => a + b, 0) / quizScores.length)
+      : 0;*/
+
+    this.updateChartData();
+  }
+
+  private updateChartData(): void {
+    // Compter les applications par statut
+    const counts = {
+      pending: this.applications.filter(app => 
+        app.status === 'En attente' || app.status === 'En attente'
+      ).length,
+      accepted: this.applications.filter(app => 
+        app.status === 'Accepté' || app.status === 'accepted'
+      ).length,
+      rejected: this.applications.filter(app => 
+        app.status === 'Refusé' || app.status === 'rejected'
+      ).length
+    };
+
+    this.barChartData = {
+      ...this.barChartData,
+      datasets: [
+        {
+          ...this.barChartData.datasets[0],
+          data: [counts.pending, counts.accepted, counts.rejected]
+        }
+      ]
+    };
+  }
 }
