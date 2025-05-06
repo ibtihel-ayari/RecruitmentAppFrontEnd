@@ -19,6 +19,7 @@ import { ApplicationtopComponent } from './components/applicationtop/application
 import { ProfileComponent } from './components/profile/profile.component';
 import { DashboardrhComponent } from './components/dashboardrh/dashboardrh.component';
 import { DashboardcandidateComponent } from './components/dashboardcandidate/dashboardcandidate.component';
+import { QuizComponent } from './components/quiz/quiz.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -43,6 +44,8 @@ export const routes: Routes = [
     { path: 'topapplication', component: ApplicationtopComponent },
     {path: 'topapplication/:id',loadComponent: () => import('./components/applicationtop/applicationtop.component').then(m => m.ApplicationtopComponent)},
     { path: 'profile', component:   ProfileComponent },
+    { path: 'quiz', component:   QuizComponent },
+
 
 
     { path: '', redirectTo: '/login', pathMatch: 'full' },
