@@ -18,9 +18,6 @@
           </button>
         </div>
   
-        <p class="text-sm text-gray-500 mb-3">
-          <strong>Application ID:</strong> {{ quiz.applicationId }}
-        </p>
   
         <div *ngFor="let question of (isExpanded(quiz.id) ? quiz.questions : quiz.questions.slice(0, 1))" class="mb-4">
           <p class="text-gray-700 font-semibold mb-1 text-sm">❓ {{ question.text }}</p>

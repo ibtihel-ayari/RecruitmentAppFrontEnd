@@ -1,7 +1,8 @@
 <div class="ml-72 p-8">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
-        <h6 class="text-sm font-semibold text-gray-800">Génération du Quiz</h6>
-  
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <h6 class="text-sm font-semibold text-gray-800 mb-4">Génération du Quiz</h6>
+
+    <!-- ID de l'offre -->
     <div class="mb-4">
       <label for="jobId" class="block text-sm font-medium text-gray-700 mb-1">ID de l'offre</label>
       <input
@@ -12,30 +13,67 @@
         placeholder="Entrez l'ID de l'offre"
       />
     </div>
-  
+
+    <!-- Distribution des modules -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Technique</label>
+        <input
+          type="number"
+          [(ngModel)]="moduleInputs['Technique']"
+          class="border rounded w-full px-3 py-2"
+          placeholder="Nb questions"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Comportementale</label>
+        <input
+          type="number"
+          [(ngModel)]="moduleInputs['Comportementale']"
+          class="border rounded w-full px-3 py-2"
+          placeholder="Nb questions"
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Culture d'entreprise</label>
+        <input
+          type="number"
+          [(ngModel)]="moduleInputs['Culture d\'entreprise']"
+          class="border rounded w-full px-3 py-2"
+          placeholder="Nb questions"
+        />
+      </div>
+    </div>
+
+    <!-- Bouton générer -->
     <button (click)="generateQuiz()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
       Générer le Quiz
     </button>
-  
+
+    <!-- Messages -->
     <div *ngIf="isLoading" class="mt-4 text-gray-500">Génération en cours...</div>
     <div *ngIf="errorMessage" class="mt-4 text-red-600">{{ errorMessage }}</div>
     <div *ngIf="successMessage" class="mt-4 text-green-600">{{ successMessage }}</div>
-  
+
+    <!-- Affichage du quiz généré -->
     <div *ngIf="generatedQuiz.length > 0" class="mt-6">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Quiz généré</h3>
       <div *ngFor="let quiz of generatedQuiz" class="bg-gray-100 p-4 rounded mb-4">
         <div *ngFor="let question of quiz.questions">
           <p class="font-medium text-gray-800">❓ {{ question.text }}</p>
+          <p class="text-sm text-gray-500 mb-1">Module : {{ question.module }}</p>
+
           <ul class="list-disc list-inside text-sm text-gray-600">
             <li *ngFor="let option of question.options">
               {{ option.optionText || option }}
             </li>
           </ul>
-          
           <p class="text-green-700 text-xs mt-1">✅ Réponse correcte : {{ question.correctAnswer }}</p>
           <hr class="my-2">
         </div>
       </div>
+
+      <!-- Champ application ID -->
       <div class="mb-4">
         <label for="appId" class="block text-sm font-medium text-gray-700 mb-1">ID de la candidature</label>
         <input
@@ -46,10 +84,11 @@
           placeholder="Entrez l'ID de la candidature"
         />
       </div>
-      
+
+      <!-- Bouton enregistrer -->
       <button (click)="saveQuiz()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
         Enregistrer le Quiz
       </button>
     </div>
   </div>
-  </div>
+</div>

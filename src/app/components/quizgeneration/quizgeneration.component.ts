@@ -22,53 +22,126 @@ export class QuizgenerationComponent {
 
   constructor(private quizService: QuizService) {}
 
+  moduleInputs: { [key: string]: number } = {
+    'Technique': 0,
+    'Comportementale': 0,
+    "Culture d'entreprise": 0
+  };
+  
   generateQuiz() {
     if (!this.jobOfferId) {
       this.errorMessage = 'Veuillez saisir un ID d\'offre.';
       return;
     }
-
+  
+    const moduleDistributions: { [key: string]: number } = {};
+    let hasValidModule = false;
+  
+    for (const key in this.moduleInputs) {
+      const value = this.moduleInputs[key];
+      if (value && value > 0) {
+        moduleDistributions[key] = value;
+        hasValidModule = true;
+      }
+    }
+  
+    if (!hasValidModule) {
+      this.errorMessage = 'Veuillez saisir au moins une valeur pour les modules.';
+      return;
+    }
+  
+    const payload = {
+      jobOfferId: this.jobOfferId,
+      moduleDistributions: moduleDistributions
+    };
+  
     this.isLoading = true;
-    this.quizService.generateQuiz({ jobOfferId: this.jobOfferId }).subscribe({
-      next: (quiz) => {
-        this.generatedQuiz = quiz;
-        this.successMessage = '';
+    this.quizService.generateQuiz(payload).subscribe({
+      next: (response) => {
+        // Vérification et transformation des données
+        if (Array.isArray(response)) {
+          this.generatedQuiz = response.map((quizItem: any) => ({
+            id: quizItem.id || 0,
+            applicationId: quizItem.applicationId || 0,
+            questions: Array.isArray(quizItem.questions) 
+              ? quizItem.questions.map((question: any) => ({
+                  id: question.id || 0,
+                  text: question.text || '',
+                  correctAnswer: question.correctAnswer || '',
+                  module: question.module || question.moduleName || '',
+                  options: Array.isArray(question.options)
+                    ? question.options.map((opt: any) => ({
+                        id: opt.id || 0,
+                        optionText: typeof opt === 'string' ? opt : (opt.optionText || '')
+                      }))
+                    : []
+                }))
+              : []
+          }));
+        } else {
+          // Si la réponse n'est pas un tableau
+          this.generatedQuiz = [{
+            id: response.id || 0,
+            applicationId: response.applicationId || 0,
+            questions: Array.isArray(response.questions)
+              ? response.questions.map((question: any) => ({
+                  // même transformation que ci-dessus
+                }))
+              : []
+          }];
+        }
+  
+        this.successMessage = 'Quiz généré avec succès.';
         this.errorMessage = '';
         this.isLoading = false;
       },
       error: (err) => {
         this.errorMessage = 'Erreur lors de la génération du quiz.';
         this.isLoading = false;
+        console.error('Erreur détaillée:', err);
       }
     });
   }
+  
   saveQuiz() {
-    if (!this.generatedQuiz.length || !this.applicationId) return;
-  
-    const quizToSave: Quiz[] = this.generatedQuiz.map(quiz => ({
-      id: 0,
-      applicationId: this.applicationId!,
-      questions: quiz.questions.map(q => ({
-        id: 0,
-        text: q.text,
-        correctAnswer: q.correctAnswer,
-        moduleName: typeof q.module === 'string' ? q.module : q.module?.name || '',
-        options: q.options.map(opt => ({
-          id: 0,
-          optionText: typeof opt === 'string' ? opt : opt.optionText
+  //  if (!this.generatedQuiz.length || !this.applicationId) {
+ if (!this.generatedQuiz.length) {
+      this.errorMessage = 'Aucun quiz à enregistrer ';
+      return;
+    }
+    try {
+      const quizToSave = this.generatedQuiz.map(quiz => ({
+        id: quiz.id || 0,
+        applicationId: this.applicationId!,
+        questions: quiz.questions.map(q => ({
+          id: q.id || 0,
+          text: q.text,
+          correctAnswer: q.correctAnswer,
+          module: q.module,
+          options: Array.isArray(q.options)
+            ? q.options.map(opt => ({
+                id: opt.id || 0,
+                optionText: typeof opt === 'string' ? opt : opt.optionText
+              }))
+            : []
         }))
-      }))
-    }));
+      }));
   
-    this.quizService.saveGeneratedQuiz(quizToSave).subscribe({
-      next: () => {
-        this.successMessage = 'Quiz enregistré avec succès.';
-        this.errorMessage = '';
-      },
-      error: () => {
-        this.errorMessage = 'Erreur lors de l\'enregistrement du quiz.';
-      }
-    });
+      this.quizService.saveGeneratedQuiz(quizToSave).subscribe({
+        next: () => {
+      
+          this.successMessage = 'Quiz enregistré avec succès.';
+          console.log('Quiz enregistré avec succès.', quizToSave)
+          this.errorMessage = '';
+        },
+        error: (err) => {
+          this.errorMessage = 'Erreur lors de l\'enregistrement du quiz.';
+          console.error('Erreur détaillée:', err);
+        }
+      });
+    } catch (error) {
+      this.errorMessage = 'Erreur de format des données du quiz';
+      console.error('Erreur de transformation:', error);
+    }
   }
-  
 }

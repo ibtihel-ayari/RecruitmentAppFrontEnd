@@ -29,6 +29,7 @@ export class QuizComponent implements OnInit {
     this.quizService.getQuizzes().subscribe({
       next: (data) => {
         this.quizzes = data;
+        console.log('Liste des quizzes', this.quizzes);
         this.isLoading = false;
       },
       error: (error) => {
