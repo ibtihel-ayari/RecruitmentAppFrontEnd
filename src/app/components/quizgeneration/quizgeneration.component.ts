@@ -104,11 +104,16 @@ export class QuizgenerationComponent {
   }
   
   saveQuiz() {
-  //  if (!this.generatedQuiz.length || !this.applicationId) {
- if (!this.generatedQuiz.length) {
-      this.errorMessage = 'Aucun quiz à enregistrer ';
+    // Réinitialisez les messages
+    this.successMessage = '';
+    this.errorMessage = '';
+  
+    if (!this.generatedQuiz.length) {
+      this.errorMessage = 'Aucun quiz à enregistrer';
       return;
     }
+  
+  
     try {
       const quizToSave = this.generatedQuiz.map(quiz => ({
         id: quiz.id || 0,
@@ -117,7 +122,7 @@ export class QuizgenerationComponent {
           id: q.id || 0,
           text: q.text,
           correctAnswer: q.correctAnswer,
-          module: q.module,
+          moduleName: q.module, 
           options: Array.isArray(q.options)
             ? q.options.map(opt => ({
                 id: opt.id || 0,
@@ -129,17 +134,20 @@ export class QuizgenerationComponent {
   
       this.quizService.saveGeneratedQuiz(quizToSave).subscribe({
         next: () => {
-      
           this.successMessage = 'Quiz enregistré avec succès.';
-          console.log('Quiz enregistré avec succès.', quizToSave)
           this.errorMessage = '';
+          console.log('Quiz enregistré avec succès.', quizToSave);
+          // Réinitialisez le quiz si nécessaire
+          // this.generatedQuiz = [];
         },
         error: (err) => {
+          this.successMessage = '';
           this.errorMessage = 'Erreur lors de l\'enregistrement du quiz.';
           console.error('Erreur détaillée:', err);
         }
       });
     } catch (error) {
+      this.successMessage = '';
       this.errorMessage = 'Erreur de format des données du quiz';
       console.error('Erreur de transformation:', error);
     }
