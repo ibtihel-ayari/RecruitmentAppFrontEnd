@@ -3,6 +3,7 @@ import { Quiz } from '../../models/quiz.models';
 import { QuizService } from '../../services/quiz.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quizgeneration',
@@ -20,7 +21,7 @@ export class QuizgenerationComponent {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private quizService: QuizService) {}
+  constructor(private quizService: QuizService,private router:Router) {}
 
   moduleInputs: { [key: string]: number } = {
     'Technique': 0,
@@ -137,6 +138,7 @@ export class QuizgenerationComponent {
           this.successMessage = 'Quiz enregistré avec succès.';
           this.errorMessage = '';
           console.log('Quiz enregistré avec succès.', quizToSave);
+
           // Réinitialisez le quiz si nécessaire
           // this.generatedQuiz = [];
         },
@@ -152,4 +154,6 @@ export class QuizgenerationComponent {
       console.error('Erreur de transformation:', error);
     }
   }
+  goBack(): void {
+    this.router.navigate(['/quiz']);}
 }

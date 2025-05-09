@@ -1,6 +1,29 @@
 <div class="ml-72 p-8">
   <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="flex items-center justify-between mb-6">
+
     <h6 class="text-sm font-semibold text-gray-800 mb-4">Génération du Quiz</h6>
+    <div class="flex space-x-2">
+      <button (click)="saveQuiz()" class="bg-green-900 text-white p-2 rounded hover:bg-green-900 transition shadow">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor" viewBox="0 0 24 24"
+             class="w-5 h-5">
+          <path d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a1 1 0 001-1V7.41a1 1 0 00-.29-.7l-3.42-3.42A1 1 0 0017 3zm0 2l3 3h-3V5zM12 19a2 2 0 110-4 2 2 0 010 4zm-4-6V5h8v8H8z" />
+        </svg>
+      </button>
+      <button type="button" (click)="goBack()"
+              class="bg-gray-100 border border-gray-300 rounded-full p-2 hover:bg-gray-200 transition shadow">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 24 24" fill="currentColor"
+             class="w-6 h-6 text-gray-700">
+          <path d="M10 19l-7-7 7-7v4h6a4 4 0 014 4v1a1 1 0 01-1 1h-1v-2a2 2 0 00-2-2h-6v4z" />
+        </svg>
+      </button>
+    </div>
+
+</div>
+
+
 
     <!-- ID de l'offre -->
     <div class="mb-4">
@@ -82,13 +105,13 @@
           [(ngModel)]="applicationId"
           class="border rounded w-full px-3 py-2"
           placeholder="Entrez l'ID de la candidature"
-        />
-      </div>-->
-
-      <!-- Bouton enregistrer -->
+        /> 
       <button (click)="saveQuiz()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
         Enregistrer le Quiz
       </button>
+      </div>-->
+
+    
     </div>
   </div>
 </div>
