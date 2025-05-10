@@ -4,6 +4,7 @@ import { Quiz } from '../../models/quiz.models';
 import { CommonModule} from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { JobofferService } from '../../services/joboffer.service';
 
 @Component({
   selector: 'app-quiz',
@@ -19,11 +20,15 @@ export class QuizComponent implements OnInit {
   expandedQuizzes: { [key: number]: boolean } = {};
 
   selectedQuizId: number | null = null;
+  jobOffers: any[] = [];
+selectedJobOfferIdForFilter: number | null = null;
 
-  constructor(private quizService: QuizService) {}
+  constructor(private quizService: QuizService, private jobOfferService: JobofferService) {}
 
   ngOnInit(): void {
     this.fetchAllQuizzes();
+      this.fetchJobOffers(); 
+
   }
 
   fetchAllQuizzes() {
@@ -79,4 +84,25 @@ export class QuizComponent implements OnInit {
   isExpanded(quizId: number): boolean {
     return !!this.expandedQuizzes[quizId];
   }
+  fetchJobOffers() {
+  this.jobOfferService.getJobOffer().subscribe({
+    next: (data) => this.jobOffers = data,
+    error: (err) => console.error('Erreur lors du chargement des offres', err)
+  });
+}
+
+onJobOfferFilterChange() {
+  if (this.selectedJobOfferIdForFilter) {
+    this.quizService.getQuizzesByJobOfferId(this.selectedJobOfferIdForFilter).subscribe({
+      next: (quizzes) => {
+        console.log('Quizzes filtrés:', quizzes);  // 👈 Ajoute ceci
+        this.quizzes = quizzes;
+      },
+      error: (err) => console.error('Erreur lors du filtrage des quiz', err)
+    });
+  } else {
+    this.fetchAllQuizzes();
+  }
+}
+
 }

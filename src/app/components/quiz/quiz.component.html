@@ -24,7 +24,17 @@
         </a>
       </div>
     </div>
-
+<div class="mb-4 max-w-xs">
+  <label class="block text-sm font-medium text-gray-700 mb-1">Filtrer par offre</label>
+  <select
+    [(ngModel)]="selectedJobOfferIdForFilter"
+    (change)="onJobOfferFilterChange()"
+    class="border rounded px-3 py-2 w-full"
+  >
+    <option [ngValue]="null">Toutes les offres</option>
+    <option *ngFor="let offer of jobOffers" [ngValue]="offer.id">{{ offer.title }}</option>
+  </select>
+</div>
     <!-- Loading & error messages -->
     <div *ngIf="isLoading" class="text-center text-gray-500">Chargement en cours...</div>
     <div *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</div>
