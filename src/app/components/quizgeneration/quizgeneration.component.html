@@ -27,14 +27,15 @@
 
     <!-- ID de l'offre -->
     <div class="mb-4">
-      <label for="jobId" class="block text-sm font-medium text-gray-700 mb-1">ID de l'offre</label>
-      <input
-        type="number"
-        id="jobId"
-        [(ngModel)]="jobOfferId"
-        class="border rounded w-full px-3 py-2"
-        placeholder="Entrez l'ID de l'offre"
-      />
+ <select
+  id="jobSelect"
+  [(ngModel)]="jobOfferId"
+  class="border rounded w-full px-3 py-2"
+>
+  <option [ngValue]="null" disabled>-- Choisissez une offre --</option>
+  <option *ngFor="let job of jobOffers" [ngValue]="job.id">{{ job.title }}</option>
+</select>
+
     </div>
 
     <!-- Distribution des modules -->
@@ -68,10 +69,18 @@
       </div>
     </div>
 
-    <!-- Bouton générer -->
-    <button (click)="generateQuiz()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-      Générer le Quiz
-    </button>
+<!-- Bouton générer, centré avec un design harmonieux -->
+<div class="flex justify-center mt-6">
+  <button
+    (click)="generateQuiz()"
+    class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 rounded-full shadow-lg transition duration-200"
+  >
+    Générer le Quiz
+  </button>
+</div>
+
+
+
 
     <!-- Messages -->
     <div *ngIf="isLoading" class="mt-4 text-gray-500">Génération en cours...</div>

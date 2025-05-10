@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Quiz } from '../../models/quiz.models';
 import { QuizService } from '../../services/quiz.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { JobOffer } from '../../models/job-offer.model';
+import { JobofferService } from '../../services/joboffer.service';
 
 @Component({
   selector: 'app-quizgeneration',
@@ -12,8 +14,10 @@ import { Router } from '@angular/router';
   templateUrl: './quizgeneration.component.html',
   styleUrl: './quizgeneration.component.css'
 })
-export class QuizgenerationComponent {
+export class QuizgenerationComponent implements OnInit {
   jobOfferId: number | null = null;
+  jobOffers: JobOffer[] = [];
+
   generatedQuiz: Quiz[] = [];
   applicationId: number | null = null;
 
@@ -21,13 +25,25 @@ export class QuizgenerationComponent {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private quizService: QuizService,private router:Router) {}
+  constructor(private quizService: QuizService,private jobofferService: JobofferService, private router:Router) {}
 
   moduleInputs: { [key: string]: number } = {
     'Technique': 0,
     'Comportementale': 0,
     "Culture d'entreprise": 0
   };
+
+  ngOnInit() {
+  this.jobofferService.getJobOffer().subscribe({
+    next: (offers) => {
+      this.jobOffers = offers;
+    },
+    error: (err) => {
+      console.error("Erreur lors du chargement des offres :", err);
+    }
+  });
+}
+
   
   generateQuiz() {
     if (!this.jobOfferId) {
