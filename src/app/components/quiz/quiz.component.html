@@ -38,6 +38,7 @@
     <!-- Loading & error messages -->
     <div *ngIf="isLoading" class="text-center text-gray-500">Chargement en cours...</div>
     <div *ngIf="errorMessage" class="text-red-500">{{ errorMessage }}</div>
+    <div *ngIf="infoMessage" class="text-blue-800">{{ infoMessage }}</div>
 
     <!-- Quiz cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">

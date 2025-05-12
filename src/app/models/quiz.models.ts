@@ -3,6 +3,7 @@ import { Application } from "./application.model";
 export interface Quiz {
     id: number;
     applicationId: number;
+    jobOfferId: number;
     application?: Application;
     questions: Question[];
     responses?: Response[];

@@ -18,7 +18,7 @@ export class QuizComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   expandedQuizzes: { [key: number]: boolean } = {};
-
+infoMessage = '';
   selectedQuizId: number | null = null;
   jobOffers: any[] = [];
 selectedJobOfferIdForFilter: number | null = null;
@@ -95,14 +95,21 @@ onJobOfferFilterChange() {
   if (this.selectedJobOfferIdForFilter) {
     this.quizService.getQuizzesByJobOfferId(this.selectedJobOfferIdForFilter).subscribe({
       next: (quizzes) => {
-        console.log('Quizzes filtrés:', quizzes);  // 👈 Ajoute ceci
         this.quizzes = quizzes;
+        this.errorMessage = '';
+        this.infoMessage = quizzes.length === 0 ? 'Aucun quiz trouvé pour cette offre.' : '';
       },
-      error: (err) => console.error('Erreur lors du filtrage des quiz', err)
+      error: (err) => {
+        console.error('Erreur lors du filtrage des quiz', err);
+        this.errorMessage = 'Erreur lors du filtrage des quiz.';
+        this.infoMessage = '';
+      }
     });
   } else {
     this.fetchAllQuizzes();
+    this.infoMessage = '';
   }
 }
+
 
 }

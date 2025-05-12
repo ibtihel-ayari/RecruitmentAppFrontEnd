@@ -80,6 +80,7 @@ export class QuizgenerationComponent implements OnInit {
           this.generatedQuiz = response.map((quizItem: any) => ({
             id: quizItem.id || 0,
             applicationId: quizItem.applicationId || 0,
+            jobOfferId: this.jobOfferId!,
             questions: Array.isArray(quizItem.questions) 
               ? quizItem.questions.map((question: any) => ({
                   id: question.id || 0,
@@ -99,6 +100,7 @@ export class QuizgenerationComponent implements OnInit {
           // Si la réponse n'est pas un tableau
           this.generatedQuiz = [{
             id: response.id || 0,
+            jobOfferId: this.jobOfferId!,
             applicationId: response.applicationId || 0,
             questions: Array.isArray(response.questions)
               ? response.questions.map((question: any) => ({
@@ -135,6 +137,7 @@ export class QuizgenerationComponent implements OnInit {
       const quizToSave = this.generatedQuiz.map(quiz => ({
         id: quiz.id || 0,
         applicationId: this.applicationId!,
+        jobOfferId: this.jobOfferId!,
         questions: quiz.questions.map(q => ({
           id: q.id || 0,
           text: q.text,
