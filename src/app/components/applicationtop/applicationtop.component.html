@@ -29,6 +29,13 @@
     <div *ngIf="isLoading" class="text-blue-600 font-medium mb-4">
       🔄 Analyse en cours...
     </div>
+       <!-- Success/Error Messages -->
+    <div *ngIf="successMessage" class="mb-4 p-3 bg-green-100 text-green-800 rounded-lg">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="mb-4 p-3 bg-red-100 text-red-800 rounded-lg">
+      {{ errorMessage }}
+    </div>
 
     <table *ngIf="!isLoading && applications.length > 0"
            class="min-w-full table-auto border border-gray-200 shadow-sm rounded-xl overflow-hidden">
@@ -38,6 +45,8 @@
           <th class="border px-4 py-3 font-medium">Offre d’emploi</th>
           <th class="border px-4 py-3 font-medium">Score de similarité</th>
           <th class="border px-4 py-2">Pré-sélection</th>
+                    <th class="border px-4 py-2">Affecter un quiz </th>
+
 
         </tr>
       </thead>
@@ -59,6 +68,21 @@
               {{ app.isValidated ? 'Pré-sélectionné' : 'Pré-sélectionner' }}
             </button>
           </td>
+<td>
+  <button
+    (click)="assignRandomQuiz(app)"
+    [disabled]="app.isAssigningQuiz || app.isValidated"
+    [ngClass]="{
+      'bg-purple-600 hover:bg-purple-700': !app.isAssigningQuiz && !app.isValidated,
+      'bg-purple-400 cursor-not-allowed': app.isAssigningQuiz || app.isValidated
+    }"
+    class="text-white px-3 py-1 rounded text-xs"
+  >
+    <span *ngIf="!app.isAssigningQuiz">Affecter un quiz</span>
+    <span *ngIf="app.isAssigningQuiz">En cours...</span>
+  </button>
+</td>
+
         </tr>
       </tbody>
     </table>

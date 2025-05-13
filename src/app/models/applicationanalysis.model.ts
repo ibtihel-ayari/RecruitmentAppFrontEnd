@@ -4,4 +4,6 @@ export interface ApplicationAnalysis {
     candidateName: string;
     jobOfferTitle: string;
     isValidated: boolean;
+    isAssigningQuiz?: boolean; 
+
   }

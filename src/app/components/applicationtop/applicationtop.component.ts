@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationService } from '../../services/application.service';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
   selector: 'app-applicationtop',
@@ -19,11 +20,13 @@ export class ApplicationtopComponent implements OnInit {
   applications: ApplicationAnalysis[] = [];
   isLoading = false;
   successMessage: string | null = null;
-
+ isAssigningQuiz = false;
+  errorMessage: string | null = null;
 
   constructor(
     private analysisService: AnalysisService,
     private applicationService:ApplicationService,
+    private quizService: QuizService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -79,6 +82,49 @@ export class ApplicationtopComponent implements OnInit {
         }
       });
   }
-  
-  
+
+ assignRandomQuiz(application: ApplicationAnalysis): void {
+  if (application.isAssigningQuiz || application.isValidated) return;
+
+  application.isAssigningQuiz = true;
+  this.errorMessage = null;
+  this.successMessage = null;
+
+  this.quizService.getQuizzesByJobOfferId(this.jobOfferId).subscribe({
+    next: (quizzes) => {
+      if (!quizzes || quizzes.length === 0) {
+        this.errorMessage = "Aucun quiz disponible pour cette offre.";
+        application.isAssigningQuiz = false;
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * quizzes.length);
+      const selectedQuiz = quizzes[randomIndex];
+
+      this.quizService.updateQuiz({
+        id: selectedQuiz.id,
+        applicationId: application.id,
+        jobOfferId: this.jobOfferId
+      }).subscribe({
+        next: () => {
+          this.successMessage = `Quiz affecté avec succès à ${application.candidateName}`;
+          setTimeout(() => this.successMessage = null, 3000);
+          application.isAssigningQuiz = false;
+          // this.getTopApplications(); // Optionnel selon vos besoins
+        },
+        error: (error) => {
+          console.error('Erreur lors de l\'affectation du quiz :', error);
+          this.errorMessage = "Erreur lors de l'affectation du quiz";
+          application.isAssigningQuiz = false;
+        }
+      });
+    },
+    error: (error) => {
+      console.error('Erreur lors de la récupération des quizzes :', error);
+      this.errorMessage = "Erreur lors de la récupération des quizzes";
+      application.isAssigningQuiz = false;
+    }
+  });
+}
+
 }
