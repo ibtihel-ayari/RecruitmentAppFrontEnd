@@ -29,6 +29,10 @@ saveGeneratedQuiz(quiz: Quiz[]): Observable<{ SavedQuizIds: number[] }> {
   return this.http.post<{ SavedQuizIds: number[] }>(`${this.apiUrl}/save`, quiz);
 }
 
+updateQuiz(quiz: any): Observable<any> {
+  return this.http.put(`${this.apiUrl}/update`, quiz);
+}
+
 // DELETE: Delete a quiz by ID
 deleteQuiz(quizId: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}/${quizId}`);
