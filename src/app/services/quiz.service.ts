@@ -37,6 +37,15 @@ updateQuiz(quiz: any): Observable<any> {
 deleteQuiz(quizId: number): Observable<any> {
   return this.http.delete(`${this.apiUrl}/${quizId}`);
 }
+// Get a specific quiz by its ID
+getQuizById(quizId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/${quizId}`);
+}
+// Send quiz to candidate
+sendQuizToCandidate(quizId: number, request: SendQuizRequest): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/send/${quizId}`, request);
+}
+
 
 
 }
