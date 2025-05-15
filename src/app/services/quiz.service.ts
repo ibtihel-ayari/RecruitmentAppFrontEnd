@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Quiz } from '../models/quiz.models';
 import { SendQuizRequest } from '../models/sendquizrequest.model';
+import { QuizSubmission } from '../models/quizsubmission.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,13 +49,11 @@ sendQuizToCandidate(quizId: number, request: SendQuizRequest): Observable<any> {
 }
 
 //submit quiz answers
-submitQuiz(submission: {
-  quizId: number;
-  applicationId: number;
-  answers: { answerText: string }[];
-}): Observable<any> {
+submitQuiz(submission: QuizSubmission): Observable<any> {
   return this.http.post(`${this.apiUrl}/submit`, submission);
 }
+
+
 
 
 
