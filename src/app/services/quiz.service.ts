@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Quiz } from '../models/quiz.models';
+import { SendQuizRequest } from '../models/sendquizrequest.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,15 @@ getQuizById(quizId: number): Observable<any> {
 // Send quiz to candidate
 sendQuizToCandidate(quizId: number, request: SendQuizRequest): Observable<any> {
   return this.http.post<any>(`${this.apiUrl}/send/${quizId}`, request);
+}
+
+//submit quiz answers
+submitQuiz(submission: {
+  quizId: number;
+  applicationId: number;
+  answers: { answerText: string }[];
+}): Observable<any> {
+  return this.http.post(`${this.apiUrl}/submit`, submission);
 }
 
 
