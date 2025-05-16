@@ -21,6 +21,7 @@ import { DashboardrhComponent } from './components/dashboardrh/dashboardrh.compo
 import { DashboardcandidateComponent } from './components/dashboardcandidate/dashboardcandidate.component';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { QuizgenerationComponent } from './components/quizgeneration/quizgeneration.component';
+import { QuizpassComponent } from './components/quizpass/quizpass.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -47,6 +48,7 @@ export const routes: Routes = [
     { path: 'profile', component:   ProfileComponent },
     { path: 'quiz', component:   QuizComponent },
     { path: 'quizgeneration', component:   QuizgenerationComponent },
+    { path: 'passquiz/:quizId', component: QuizpassComponent },
 
 
 
