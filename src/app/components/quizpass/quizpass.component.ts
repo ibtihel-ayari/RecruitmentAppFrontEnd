@@ -28,11 +28,12 @@ export class QuizpassComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.quizId = +this.route.snapshot.paramMap.get('quizId')!;
-    this.applicationId = 1; // <-- à adapter dynamiquement
-    this.fetchQuiz();
-  }
+ngOnInit(): void {
+  this.quizId = +this.route.snapshot.paramMap.get('quizId')!;
+  this.applicationId = +this.route.snapshot.paramMap.get('applicationId')!;
+  this.fetchQuiz();
+}
+
 
   fetchQuiz() {
     this.quizService.getQuizById(this.quizId).subscribe((res) => {
@@ -42,20 +43,21 @@ export class QuizpassComponent implements OnInit {
     });
   }
 
-  startTimer() {
-    this.timer = 60;
-    this.intervalId = setInterval(() => {
-      this.timer--;
-      if (this.timer === 0) {
-        this.next();
-      }
-    }, 1000);
-  }
+startTimer() {
+  this.timer = this.questions.length * 60;
+  this.intervalId = setInterval(() => {
+    this.timer--;
+    if (this.timer <= 0) {
+      clearInterval(this.intervalId);
+      this.submitQuiz(); // temps écoulé = soumission automatique
+    }
+  }, 1000);
+}
+
 
   next() {
     if (this.currentIndex < this.questions.length - 1) {
       this.currentIndex++;
-      this.restartTimer();
     } else {
       this.submitQuiz();
     }
@@ -64,30 +66,33 @@ export class QuizpassComponent implements OnInit {
   previous() {
     if (this.currentIndex > 0) {
       this.currentIndex--;
-      this.restartTimer();
     }
   }
+  get displayTime(): string {
+  const minutes = Math.floor(this.timer / 60);
+  const seconds = this.timer % 60;
+  return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+}
+
+
 
   selectAnswer(answer: string) {
     this.selectedAnswers[this.currentIndex] = answer;
   }
 
-  restartTimer() {
-    clearInterval(this.intervalId);
-    this.startTimer();
-  }
 
-  submitQuiz() {
-    clearInterval(this.intervalId);
-    const submission = {
-      quizId: this.quizId,
-      applicationId: this.applicationId,
-      answers: this.selectedAnswers.map(a => ({ answerText: a }))
-    };
-    this.quizService.submitQuiz(submission).subscribe(res => {
-      this.isSubmitted = true;
-      alert(`Quiz soumis avec succès ! Score: ${res.score}%`);
-      this.router.navigate(['/merci']); // ou autre page
-    });
-  }
+submitQuiz() {
+  clearInterval(this.intervalId);
+  const submission = {
+    quizId: this.quizId,
+    applicationId: this.applicationId,
+    answers: this.selectedAnswers.map(a => ({ answerText: a }))
+  };
+  this.quizService.submitQuiz(submission).subscribe(res => {
+    this.isSubmitted = true;
+    alert(`Quiz soumis avec succès ! Score: ${res.score}%`);
+    this.router.navigate(['/merci']);
+  });
+}
+
 }

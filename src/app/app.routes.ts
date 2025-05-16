@@ -48,7 +48,7 @@ export const routes: Routes = [
     { path: 'profile', component:   ProfileComponent },
     { path: 'quiz', component:   QuizComponent },
     { path: 'quizgeneration', component:   QuizgenerationComponent },
-    { path: 'passquiz/:quizId', component: QuizpassComponent },
+    { path: 'passquiz/:quizId/:applicationId', component: QuizpassComponent },
 
 
 
