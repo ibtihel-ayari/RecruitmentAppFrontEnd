@@ -17,10 +17,21 @@ export class AppComponent {
   showNavbar = true;
 
   constructor(private router: Router) {
-    this.router.events.subscribe(event => {
+  /*  this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.showNavbar = !['/login', '/register'].includes(event.url);
       }
-    });
+    });*/
+    this.router.events.subscribe(event => {
+  if (event instanceof NavigationEnd) {
+    const url = event.url;
+    this.showNavbar = !(
+      url === '/login' ||
+      url === '/register' ||
+      /^\/passquiz\/\d+\/\d+/.test(url)  
+    );
+  }
+});
+
   }
 }
