@@ -110,6 +110,8 @@ export class ApplicationtopComponent implements OnInit {
           this.successMessage = `Quiz affecté avec succès à ${application.candidateName}`;
           setTimeout(() => this.successMessage = null, 3000);
           application.isAssigningQuiz = false;
+          application.quizId = selectedQuiz.id;
+
           // this.getTopApplications(); // Optionnel selon vos besoins
         },
         error: (error) => {
@@ -126,5 +128,36 @@ export class ApplicationtopComponent implements OnInit {
     }
   });
 }
+
+
+//send email to candidate 
+sendQuiz(app: ApplicationAnalysis): void {
+  console.log('Envoi email à', app);
+
+  if (!app.quizId || !app.candidateEmail) {
+    this.errorMessage = "Email ou quiz manquant.";
+    return;
+  }
+
+  const request = {
+    candidateEmail: app.candidateEmail,
+    candidateName: app.candidateName
+  };
+
+  this.quizService.sendQuizToCandidate(app.quizId, request).subscribe({
+    next: () => {
+      this.successMessage = `Email envoyé à ${app.candidateName}`;
+      setTimeout(() => this.successMessage = null, 3000);
+    },
+    error: (error) => {
+      console.error("Erreur lors de l'envoi de l'email :", error);
+      this.errorMessage = "Erreur lors de l'envoi de l'email.";
+    }
+  });
+}
+
+
+
+
 
 }
