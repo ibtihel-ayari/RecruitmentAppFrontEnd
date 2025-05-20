@@ -22,6 +22,7 @@ import { DashboardcandidateComponent } from './components/dashboardcandidate/das
 import { QuizComponent } from './components/quiz/quiz.component';
 import { QuizgenerationComponent } from './components/quizgeneration/quizgeneration.component';
 import { QuizpassComponent } from './components/quizpass/quizpass.component';
+import { FinalvalidationComponent } from './components/finalvalidation/finalvalidation.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -49,6 +50,8 @@ export const routes: Routes = [
     { path: 'quiz', component:   QuizComponent },
     { path: 'quizgeneration', component:   QuizgenerationComponent },
     { path: 'passquiz/:quizId/:applicationId', component: QuizpassComponent },
+    { path: 'validation', component:   FinalvalidationComponent },
+
 
 
 
