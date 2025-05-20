@@ -53,6 +53,10 @@ submitQuiz(submission: QuizSubmission): Observable<any> {
   return this.http.post(`${this.apiUrl}/submit`, submission);
 }
 
+// Récupérer les scores triés pour une offre d'emploi donnée
+getScoresByJobOfferId(jobOfferId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/scores/byJobOffer/${jobOfferId}`);
+}
 
 
 
