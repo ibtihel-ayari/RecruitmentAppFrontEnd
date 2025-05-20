@@ -20,9 +20,9 @@ getApplications():Observable<Application[]>{
   }
 
   //get application by joboffer id
-  getApplicationsByJobOfferId(id: number): Observable<Application[]> {
+  /*getApplicationsByJobOfferId(id: number): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.apiUrl}/GetApplicationsByJobOfferId?id=${id}`);
-  }
+  }*/
  
   //create a new application
   createAppliation(application:Application):Observable<Application>{
@@ -52,7 +52,7 @@ updateApplicationValidation(id: number, application: Partial<Application>): Obse
 
       //update application status
    updateapplicationstatus(id: number, application: Partial<Application>): Observable<Application> {
-    return this.http.put<Application>(`${this.apiUrl}/UpdateApplicationStatus/${id}`, application);
+    return this.http.patch<Application>(`${this.apiUrl}/UpdateApplicationStatus/${id}`, application);
   }
 
 
