@@ -134,8 +134,13 @@ export class ApplicationtopComponent implements OnInit {
 sendQuiz(app: ApplicationAnalysis): void {
   console.log('Envoi email à', app);
 
-  if (!app.quizId || !app.candidateEmail) {
-    this.errorMessage = "Email ou quiz manquant.";
+  if (!app.candidateEmail) {
+    this.errorMessage = "Email du candidat manquant.";
+    return;
+  }
+
+  if (!app.quizId) {
+    this.errorMessage = "Aucun quiz n'a été affecté à ce candidat.";
     return;
   }
 
@@ -151,11 +156,10 @@ sendQuiz(app: ApplicationAnalysis): void {
     },
     error: (error) => {
       console.error("Erreur lors de l'envoi de l'email :", error);
-      this.errorMessage = "Erreur lors de l'envoi de l'email.";
+      this.errorMessage = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
     }
   });
 }
-
 
 
 
