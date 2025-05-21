@@ -39,30 +39,39 @@ export class ApplicationtopComponent implements OnInit {
     this.getTopApplications();
   }
 
-  getTopApplications(): void {
-    this.isLoading = true;
-    this.analysisService.getTopApplications(this.jobOfferId, this.topCount).subscribe({
-      next: (data) => {
-        this.applications = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error(err);
+getTopApplications(): void {
+  this.isLoading = true;
+  this.errorMessage = null;
+
+  // D'abord analyser les candidatures
+  this.analysisService.analyzeApplications(this.jobOfferId).subscribe({
+    next: (response) => {
+      if (response.success) {
+        // Puis récupérer les meilleures candidatures
+        this.analysisService.getTopApplications(this.jobOfferId, this.topCount).subscribe({
+          next: (data) => {
+            this.applications = data;
+            this.isLoading = false;
+          },
+          error: (err) => {
+            console.error('Erreur lors du chargement des candidatures :', err);
+            this.errorMessage = "Erreur lors du chargement des candidatures.";
+            this.isLoading = false;
+          }
+        });
+      } else {
+        this.errorMessage = "Échec de l'analyse des candidatures.";
         this.isLoading = false;
       }
-    });
-  }
+    },
+    error: (err) => {
+      console.error('Erreur lors de l\'analyse des candidatures :', err);
+      this.errorMessage = "Erreur lors de l'analyse des candidatures.";
+      this.isLoading = false;
+    }
+  });
+}
 
-  analyzeApplications(): void {
-    this.analysisService.analyzeApplications(this.jobOfferId).subscribe({
-      next: (response) => {
-        if (response.success) {
-          this.getTopApplications();
-        }
-      },
-      error: (err) => console.error(err)
-    });
-  }
   goBack(): void {
     this.router.navigate(['/joboffer']); 
   }
@@ -84,7 +93,10 @@ export class ApplicationtopComponent implements OnInit {
   }
 
  assignRandomQuiz(application: ApplicationAnalysis): void {
-  if (application.isAssigningQuiz || application.isValidated) return;
+  // Vérifier si un quiz est déjà affecté ou si l'assignation est en cours
+  if (application.isAssigningQuiz || application.quizId) {
+    return;
+  }
 
   application.isAssigningQuiz = true;
   this.errorMessage = null;
@@ -110,9 +122,7 @@ export class ApplicationtopComponent implements OnInit {
           this.successMessage = `Quiz affecté avec succès à ${application.candidateName}`;
           setTimeout(() => this.successMessage = null, 3000);
           application.isAssigningQuiz = false;
-          application.quizId = selectedQuiz.id;
-
-          // this.getTopApplications(); // Optionnel selon vos besoins
+          application.quizId = selectedQuiz.id; // Marquer que le quiz est affecté
         },
         error: (error) => {
           console.error('Erreur lors de l\'affectation du quiz :', error);

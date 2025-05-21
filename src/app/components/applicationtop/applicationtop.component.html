@@ -70,17 +70,18 @@
             </button>
           </td>
 <td>
+
   <button
     (click)="assignRandomQuiz(app)"
-    [disabled]="app.isAssigningQuiz"
+        [disabled]="app.quizId || app.isAssigningQuiz"
     [ngClass]="{
       'bg-purple-600 hover:bg-purple-700': !app.isAssigningQuiz ,
       'bg-purple-400 cursor-not-allowed': app.isAssigningQuiz 
     }"
     class="text-white px-3 py-1 rounded text-xs"
   >
-    <span *ngIf="!app.isAssigningQuiz">Affecter un quiz</span>
-    <span *ngIf="app.isAssigningQuiz">En cours...</span>
+    {{ app.quizId ? 'Quiz déjà affecté' : (app.isAssigningQuiz ? 'En cours...' : 'Affecter quiz') }}
+
   </button>
 </td>
 
