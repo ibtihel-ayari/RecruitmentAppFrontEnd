@@ -8,7 +8,8 @@ export interface ApplicationAnalysis {
  //send quiz to candidate
     candidateEmail: string; 
     quizId?: number;   
-      quizSent?: boolean; // Nouvelle propriété
-  
+      quizSent?: boolean; 
+    isSendingQuiz?: boolean; 
+
 
   }

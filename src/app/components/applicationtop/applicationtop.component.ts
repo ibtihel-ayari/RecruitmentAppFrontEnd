@@ -15,17 +15,16 @@ import { QuizService } from '../../services/quiz.service';
   styleUrl: './applicationtop.component.css'
 })
 export class ApplicationtopComponent implements OnInit {
-  jobOfferId: number = 1; 
+ jobOfferId: number = 1; 
   topCount: number = 5; 
   applications: ApplicationAnalysis[] = [];
   isLoading = false;
   successMessage: string | null = null;
- isAssigningQuiz = false;
   errorMessage: string | null = null;
 
   constructor(
     private analysisService: AnalysisService,
-    private applicationService:ApplicationService,
+    private applicationService: ApplicationService,
     private quizService: QuizService,
     private route: ActivatedRoute,
     private router: Router
@@ -39,38 +38,36 @@ export class ApplicationtopComponent implements OnInit {
     this.getTopApplications();
   }
 
-getTopApplications(): void {
-  this.isLoading = true;
-  this.errorMessage = null;
+  getTopApplications(): void {
+    this.isLoading = true;
+    this.errorMessage = null;
 
-  // D'abord analyser les candidatures
-  this.analysisService.analyzeApplications(this.jobOfferId).subscribe({
-    next: (response) => {
-      if (response.success) {
-        // Puis récupérer les meilleures candidatures
-        this.analysisService.getTopApplications(this.jobOfferId, this.topCount).subscribe({
-          next: (data) => {
-            this.applications = data;
-            this.isLoading = false;
-          },
-          error: (err) => {
-            console.error('Erreur lors du chargement des candidatures :', err);
-            this.errorMessage = "Erreur lors du chargement des candidatures.";
-            this.isLoading = false;
-          }
-        });
-      } else {
-        this.errorMessage = "Échec de l'analyse des candidatures.";
+    this.analysisService.analyzeApplications(this.jobOfferId).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.analysisService.getTopApplications(this.jobOfferId, this.topCount).subscribe({
+            next: (data) => {
+              this.applications = data;
+              this.isLoading = false;
+            },
+            error: (err) => {
+              console.error('Erreur lors du chargement des candidatures :', err);
+              this.errorMessage = "Erreur lors du chargement des candidatures.";
+              this.isLoading = false;
+            }
+          });
+        } else {
+          this.errorMessage = "Échec de l'analyse des candidatures.";
+          this.isLoading = false;
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'analyse des candidatures :', err);
+        this.errorMessage = "Erreur lors de l'analyse des candidatures.";
         this.isLoading = false;
       }
-    },
-    error: (err) => {
-      console.error('Erreur lors de l\'analyse des candidatures :', err);
-      this.errorMessage = "Erreur lors de l'analyse des candidatures.";
-      this.isLoading = false;
-    }
-  });
-}
+    });
+  }
 
   goBack(): void {
     this.router.navigate(['/joboffer']); 
@@ -83,95 +80,87 @@ getTopApplications(): void {
       .subscribe({
         next: () => {
           application.isValidated = true;
-          this.successMessage = 'Candidature validée avec succès !';
+          this.successMessage = 'Candidature Pré-sélectionnée avec succès !';
           setTimeout(() => this.successMessage = '', 3000);
         },
         error: (err) => {
-          console.error('Erreur lors de la validation :', err);
+          console.error('Erreur lors de la Pré-sélection :', err);
         }
       });
   }
 
- assignRandomQuiz(application: ApplicationAnalysis): void {
-  // Vérifier si un quiz est déjà affecté ou si l'assignation est en cours
-  if (application.isAssigningQuiz || application.quizId) {
-    return;
-  }
+  sendQuizToCandidate(application: ApplicationAnalysis): void {
+    if (application.isSendingQuiz) return;
+    
+    application.isSendingQuiz = true;
+    this.errorMessage = null;
+    this.successMessage = null;
 
-  application.isAssigningQuiz = true;
-  this.errorMessage = null;
-  this.successMessage = null;
+    // Si un quiz est déjà affecté, on l'envoie directement
+    if (application.quizId) {
+      this.sendQuizEmail(application);
+      return;
+    }
 
-  this.quizService.getQuizzesByJobOfferId(this.jobOfferId).subscribe({
-    next: (quizzes) => {
-      if (!quizzes || quizzes.length === 0) {
-        this.errorMessage = "Aucun quiz disponible pour cette offre.";
-        application.isAssigningQuiz = false;
-        return;
+    // Sinon, on affecte d'abord un quiz aléatoire
+    this.quizService.getQuizzesByJobOfferId(this.jobOfferId).subscribe({
+      next: (quizzes) => {
+        if (!quizzes || quizzes.length === 0) {
+          this.errorMessage = "Aucun quiz disponible pour cette offre.";
+          application.isSendingQuiz = false;
+          return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * quizzes.length);
+        const selectedQuiz = quizzes[randomIndex];
+
+        this.quizService.updateQuiz({
+          id: selectedQuiz.id,
+          applicationId: application.id,
+          jobOfferId: this.jobOfferId
+        }).subscribe({
+          next: () => {
+            application.quizId = selectedQuiz.id;
+            this.sendQuizEmail(application);
+          },
+          error: (error) => {
+            console.error('Erreur lors de l\'affectation du quiz :', error);
+            this.errorMessage = "Erreur lors de l'affectation du quiz";
+            application.isSendingQuiz = false;
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération des quizzes :', error);
+        this.errorMessage = "Erreur lors de la récupération des quizzes";
+        application.isSendingQuiz = false;
       }
-
-      const randomIndex = Math.floor(Math.random() * quizzes.length);
-      const selectedQuiz = quizzes[randomIndex];
-
-      this.quizService.updateQuiz({
-        id: selectedQuiz.id,
-        applicationId: application.id,
-        jobOfferId: this.jobOfferId
-      }).subscribe({
-        next: () => {
-          this.successMessage = `Quiz affecté avec succès à ${application.candidateName}`;
-          setTimeout(() => this.successMessage = null, 3000);
-          application.isAssigningQuiz = false;
-          application.quizId = selectedQuiz.id; // Marquer que le quiz est affecté
-        },
-        error: (error) => {
-          console.error('Erreur lors de l\'affectation du quiz :', error);
-          this.errorMessage = "Erreur lors de l'affectation du quiz";
-          application.isAssigningQuiz = false;
-        }
-      });
-    },
-    error: (error) => {
-      console.error('Erreur lors de la récupération des quizzes :', error);
-      this.errorMessage = "Erreur lors de la récupération des quizzes";
-      application.isAssigningQuiz = false;
-    }
-  });
-}
-
-
-//send email to candidate 
-sendQuiz(app: ApplicationAnalysis): void {
-  console.log('Envoi email à', app);
-
-  if (!app.candidateEmail) {
-    this.errorMessage = "Email du candidat manquant.";
-    return;
+    });
   }
 
-  if (!app.quizId) {
-    this.errorMessage = "Aucun quiz n'a été affecté à ce candidat.";
-    return;
-  }
-
-  const request = {
-    candidateEmail: app.candidateEmail,
-    candidateName: app.candidateName
-  };
-
-  this.quizService.sendQuizToCandidate(app.quizId, request).subscribe({
-    next: () => {
-      this.successMessage = `Email envoyé à ${app.candidateName}`;
-      setTimeout(() => this.successMessage = null, 3000);
-    },
-    error: (error) => {
-      console.error("Erreur lors de l'envoi de l'email :", error);
-      this.errorMessage = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
+  private sendQuizEmail(application: ApplicationAnalysis): void {
+    if (!application.candidateEmail) {
+      this.errorMessage = "Email du candidat manquant.";
+      application.isSendingQuiz = false;
+      return;
     }
-  });
-}
 
+    const request = {
+      candidateEmail: application.candidateEmail,
+      candidateName: application.candidateName
+    };
 
-
-
+    this.quizService.sendQuizToCandidate(application.quizId!, request).subscribe({
+      next: () => {
+        this.successMessage = `Quiz envoyé à ${application.candidateName}`;
+        setTimeout(() => this.successMessage = null, 3000);
+        application.isSendingQuiz = false;
+      },
+      error: (error) => {
+        console.error("Erreur lors de l'envoi de l'email :", error);
+        this.errorMessage = "Erreur lors de l'envoi de l'email. Veuillez réessayer.";
+        application.isSendingQuiz = false;
+      }
+    });
+  }
 }
