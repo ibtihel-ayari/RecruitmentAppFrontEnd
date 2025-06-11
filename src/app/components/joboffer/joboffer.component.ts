@@ -19,6 +19,7 @@ export class JobofferComponent implements OnInit {
   searchLocation: string = '';
   filteredJobOffers: JobOffer[] = [];
   showTopApplicationsForJob: number | null = null; 
+  expandedOffers: { [key: number]: boolean } = {};
 
 
 
@@ -80,7 +81,13 @@ export class JobofferComponent implements OnInit {
     );
   }
 
+ toggleExpand(offerId: number) {
+    this.expandedOffers[offerId] = !this.expandedOffers[offerId];
+  }
 
+  isExpanded(offerId: number): boolean {
+    return !!this.expandedOffers[offerId];
+  }
 
   isAdmin() : boolean {
     return this.auth.isAdmin()
@@ -91,4 +98,5 @@ export class JobofferComponent implements OnInit {
   isCandidate() : boolean {
     return this.auth.isCandidate()
   }
+
 }
