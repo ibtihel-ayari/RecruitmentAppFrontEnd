@@ -24,38 +24,60 @@ import { QuizgenerationComponent } from './components/quizgeneration/quizgenerat
 import { QuizpassComponent } from './components/quizpass/quizpass.component';
 import { FinalvalidationComponent } from './components/finalvalidation/finalvalidation.component';
 import { authGuard } from './auth.guard';
+import { roleGuard } from './role.guard';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard]  },
-    { path: 'dashboardrh', component: DashboardrhComponent, canActivate: [authGuard]  },
-    { path: 'dashboardcandidate', component: DashboardcandidateComponent , canActivate: [authGuard] },
-    { path: 'navbar', component: NavbarComponent, canActivate: [authGuard]  },
-    { path: 'joboffer', component: JobofferComponent , canActivate: [authGuard] },
-    { path: 'addjoboffer', component: JobofferaddComponent, canActivate: [authGuard]  },
-    { path: 'internoffer', component: InternofferComponent, canActivate: [authGuard]  },
-    { path: 'user', component: UserComponent, canActivate: [authGuard]  },
-    { path: 'adduser', component: UseraddComponent, canActivate: [authGuard]  },
-    { path: 'updateuser/:id', component: UserupdateComponent, canActivate: [authGuard]  },
-    { path: 'candidate', component: CandidateComponent, canActivate: [authGuard]  },
-    { path: 'addcandidate', component: CandidateaddComponent, canActivate: [authGuard]  },
-    { path: 'updatecandidate/:id', component: CandidateupdateComponent, canActivate: [authGuard]  },
-    { path: 'application', component: ApplicationComponent, canActivate: [authGuard]  },
-    { path: 'addapplication', component: ApplicationaddComponent, canActivate: [authGuard]  },
-    { path: 'myapplication', component: ApplicationbycandidateComponent, canActivate: [authGuard]  },
-    {path: 'addapplication/:id',loadComponent: () => import('./components/applicationadd/applicationadd.component').then(m => m.ApplicationaddComponent), canActivate: [authGuard] },
-    { path: 'topapplication', component: ApplicationtopComponent , canActivate: [authGuard] },
-    {path: 'topapplication/:id',loadComponent: () => import('./components/applicationtop/applicationtop.component').then(m => m.ApplicationtopComponent), canActivate: [authGuard] },
-    { path: 'profile', component:   ProfileComponent , canActivate: [authGuard] },
-    { path: 'quiz', component:   QuizComponent , canActivate: [authGuard] },
-    { path: 'quizgeneration', component:   QuizgenerationComponent , canActivate: [authGuard] },
-    { path: 'passquiz/:quizId/:applicationId', component: QuizpassComponent , canActivate: [authGuard] },
-    { path: 'validation', component:   FinalvalidationComponent , canActivate: [authGuard] },
+{ path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+  { path: 'dashboardrh', component: DashboardrhComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH'] } },
+  { path: 'dashboardcandidate', component: DashboardcandidateComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Candidate'] } },
+  { path: 'navbar', component: NavbarComponent, canActivate: [authGuard] },
 
+  // Job Offers
+  { path: 'joboffer', component: JobofferComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin', 'Candidate'] } },
+  { path: 'addjoboffer', component: JobofferaddComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },
+  { path: 'internoffer', component: InternofferComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin', 'Candidate'] } },
 
+  // Users
+  { path: 'user', component: UserComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+  { path: 'adduser', component: UseraddComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+  { path: 'updateuser/:id', component: UserupdateComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
 
+  // Candidates (admin only)
+  { path: 'candidate', component: CandidateComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+  { path: 'addcandidate', component: CandidateaddComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+  { path: 'updatecandidate/:id', component: CandidateupdateComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
 
+  // Applications
+  { path: 'application', component: ApplicationComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },
+  { path: 'addapplication', component: ApplicationaddComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Candidate'] } },
+  {
+    path: 'addapplication/:id',
+    loadComponent: () => import('./components/applicationadd/applicationadd.component').then(m => m.ApplicationaddComponent),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['Candidate'] }
+  },
+  { path: 'myapplication', component: ApplicationbycandidateComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Candidate'] } },
+  { path: 'topapplication', component: ApplicationtopComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH'] } },
+  {
+    path: 'topapplication/:id',
+    loadComponent: () => import('./components/applicationtop/applicationtop.component').then(m => m.ApplicationtopComponent),
+    canActivate: [authGuard, roleGuard],
+    data: { roles: ['RH'] }
+  },
 
-    { path: '', redirectTo: '/login', pathMatch: 'full' },
+  // Profile
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+
+  // Quiz
+  { path: 'quiz', component: QuizComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },
+  { path: 'quizgeneration', component: QuizgenerationComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
+  { path: 'passquiz/:quizId/:applicationId', component: QuizpassComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Candidate'] } },
+
+  // Final Validation
+  { path: 'validation', component: FinalvalidationComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },
+
+  // Default route
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
