@@ -1,6 +1,6 @@
 <div class="ml-72 p-8">
   <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-5xl">
-    <form #jobForm="ngForm" (ngSubmit)="onSubmit()">
+    <form #jobForm="ngForm" (ngSubmit)="onSubmit(jobForm)">
 
       <div class="flex items-center justify-between mb-6">
         <h6 class="text-sm font-semibold text-gray-800">Ajouter une offre</h6>
@@ -24,35 +24,114 @@
       </div>
 
       <label class="block mb-2">Titre:</label>
-      <input type="text" [(ngModel)]="joboffer.title" name="title" class="w-full border rounded px-2 py-1" placeholder="Entrez le titre" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.title" 
+             name="title" 
+             #title="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Entrez le titre">
+      <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-red-500 text-sm">
+        Le titre est obligatoire
+      </div>
 
       <label class="block mt-2">Description:</label>
-      <input type="text" [(ngModel)]="joboffer.description" name="description" class="w-full border rounded px-2 py-1" placeholder="Entrez la description" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.description" 
+             name="description" 
+             #description="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Entrez la description">
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-red-500 text-sm">
+        La description est obligatoire
+      </div>
 
       <label class="block mt-2">Lieu:</label>
-      <input type="text" [(ngModel)]="joboffer.location" name="location" class="w-full border rounded px-2 py-1" placeholder="Entrez l'emplacement" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.location" 
+             name="location" 
+             #location="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Entrez l'emplacement">
+      <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-red-500 text-sm">
+        Le lieu est obligatoire
+      </div>
 
       <label class="block mt-2">Exigences:</label>
-      <input type="text" [(ngModel)]="joboffer.requirements" name="requirements" class="w-full border rounded px-2 py-1" placeholder="Entrez les exigences" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.requirements" 
+             name="requirements" 
+             #requirements="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Entrez les exigences">
+      <div *ngIf="requirements.invalid && (requirements.dirty || requirements.touched)" class="text-red-500 text-sm">
+        Les exigences sont obligatoires
+      </div>
 
       <label class="block mt-2">Compétences techniques:</label>
-      <input type="text" [(ngModel)]="joboffer.technicalSkills" name="technicalSkills" class="w-full border rounded px-2 py-1" placeholder="Ex: Java, Angular, MySQL" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.technicalSkills" 
+             name="technicalSkills" 
+             #technicalSkills="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Ex: Java, Angular, MySQL">
+      <div *ngIf="technicalSkills.invalid && (technicalSkills.dirty || technicalSkills.touched)" class="text-red-500 text-sm">
+        Les compétences techniques sont obligatoires
+      </div>
 
       <label class="block mt-2">Expérience professionnelle:</label>
-      <input type="text" [(ngModel)]="joboffer.workExperience" name="workExperience" class="w-full border rounded px-2 py-1" placeholder="Ex: 2 ans dans le développement web" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.workExperience" 
+             name="workExperience" 
+             #workExperience="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Ex: 2 ans dans le développement web">
+      <div *ngIf="workExperience.invalid && (workExperience.dirty || workExperience.touched)" class="text-red-500 text-sm">
+        L'expérience professionnelle est obligatoire
+      </div>
 
       <label class="block mt-2">Formation académique:</label>
-      <input type="text" [(ngModel)]="joboffer.academicBackground" name="academicBackground" class="w-full border rounded px-2 py-1" placeholder="Ex: Bac+5 en informatique" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.academicBackground" 
+             name="academicBackground" 
+             #academicBackground="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Ex: Bac+5 en informatique">
+      <div *ngIf="academicBackground.invalid && (academicBackground.dirty || academicBackground.touched)" class="text-red-500 text-sm">
+        La formation académique est obligatoire
+      </div>
 
       <label class="block mt-2">Langues maîtrisées:</label>
-      <input type="text" [(ngModel)]="joboffer.languagesSpoken" name="languagesSpoken" class="w-full border rounded px-2 py-1" placeholder="Ex: Français, Anglais" required>
+      <input type="text" 
+             [(ngModel)]="joboffer.languagesSpoken" 
+             name="languagesSpoken" 
+             #languagesSpoken="ngModel"
+             required
+             class="w-full border rounded px-2 py-1" 
+             placeholder="Ex: Français, Anglais">
+      <div *ngIf="languagesSpoken.invalid && (languagesSpoken.dirty || languagesSpoken.touched)" class="text-red-500 text-sm">
+        Les langues maîtrisées sont obligatoires
+      </div>
 
       <label class="block mt-2">Type d'offre:</label>
-      <select [(ngModel)]="joboffer.type" name="type" class="w-full border rounded px-2 py-1" required>
+      <select [(ngModel)]="joboffer.type" 
+              name="type" 
+              #type="ngModel"
+              required
+              class="w-full border rounded px-2 py-1">
         <option value="" disabled selected>Choisissez un type</option>
         <option value="Stage">Stage</option>
         <option value="Emploi">Emploi</option>
       </select>
+      <div *ngIf="type.invalid && (type.dirty || type.touched)" class="text-red-500 text-sm">
+        Le type d'offre est obligatoire
+      </div>
 
     </form>
   </div>
