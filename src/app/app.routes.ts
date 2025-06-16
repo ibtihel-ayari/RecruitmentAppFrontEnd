@@ -65,7 +65,7 @@ export const routes: Routes = [
     path: 'topapplication/:id',
     loadComponent: () => import('./components/applicationtop/applicationtop.component').then(m => m.ApplicationtopComponent),
     canActivate: [authGuard, roleGuard],
-    data: { roles: ['RH'] }
+    data: { roles: ['RH', 'Admin'] }
   },
 
   // Profile

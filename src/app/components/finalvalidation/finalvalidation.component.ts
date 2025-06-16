@@ -5,6 +5,8 @@ import { QuizService } from '../../services/quiz.service';
 import { Application } from '../../models/application.model';
 import { ApplicationService } from '../../services/application.service';
 import { CommonModule } from '@angular/common';
+import { Candidate } from '../../models/candidate.models';
+import { CandidateService } from '../../services/candidate.service';
 
 @Component({
   selector: 'app-finalvalidation',
@@ -19,11 +21,14 @@ export class FinalvalidationComponent implements OnInit {
   scoresByJobOffer: { [key: number]: any[] } = {};
   isLoading = false;
   errorMessage = '';
+  candidates: Candidate[] = [];
+
   
   constructor(
     private jobOfferService: JobofferService,
     private quizService: QuizService,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,  private candidateService: CandidateService
+
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +38,14 @@ export class FinalvalidationComponent implements OnInit {
   loadData(): void {
     this.isLoading = true;
     this.errorMessage = '';
+this.candidateService.getCandidates().subscribe({
+  next: (response) => {
+    this.candidates = response.body; // assure-toi que response.body contient bien la liste
+  },
+  error: (err) => {
+    console.error('Erreur lors du chargement des candidats', err);
+  }
+});
 
     this.jobOfferService.getJobOffer().subscribe({
       next: (offers) => {
@@ -85,11 +98,16 @@ export class FinalvalidationComponent implements OnInit {
     });
   }
 
-  getCandidateName(applicationId: number, jobOfferId: number): string {
-    if (!this.scoresByJobOffer[jobOfferId]) return 'N/A';
-    const scoreInfo = this.scoresByJobOffer[jobOfferId].find(s => s.applicationId === applicationId);
-    return scoreInfo?.candidateName || 'N/A';
-  }
+getCandidateName(applicationId: number, jobOfferId: number): string {
+  const application = this.allApplications.find(app => app.id === applicationId);
+  if (!application) return 'N/A';
+
+  const candidate = this.candidates.find(c => c.id === application.candidateId);
+  if (!candidate) return 'N/A';
+
+  return `${candidate.firstName} ${candidate.lastName}`;
+}
+
 
   getCandidateScore(applicationId: number, jobOfferId: number): number {
     if (!this.scoresByJobOffer[jobOfferId]) return 0;
