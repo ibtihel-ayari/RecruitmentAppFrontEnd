@@ -1,1 +1,15 @@
-<p>faceverification works!</p>
+<div class="fixed top-0 left-0 w-screen h-screen overflow-hidden bg-black z-[9999]">
+  <video #video autoplay muted class="w-full h-full object-cover block"></video>
+  <canvas #canvas class="hidden"></canvas>
+</div>
+
+<button 
+  (click)="verifyFace()" 
+  class="fixed bottom-5 left-1/2 transform -translate-x-1/2 z-[10000] px-6 py-3 bg-blue-600 text-white rounded shadow-lg hover:bg-blue-700 transition"
+>
+  Vérifier identité
+</button>
+
+<p *ngIf="resultMessage" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 z-[10000] text-white text-lg font-semibold">
+  {{ resultMessage }}
+</p>

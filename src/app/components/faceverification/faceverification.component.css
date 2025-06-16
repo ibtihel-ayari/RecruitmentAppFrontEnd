@@ -1,0 +1,53 @@
+.verification-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.webcam-container {
+  margin: 20px 0;
+}
+
+.webcam-feed {
+  width: 100%;
+  max-width: 500px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #fde0e0;
+  border-radius: 4px;
+}
+
+.success-message {
+  color: #388e3c;
+  margin: 15px 0;
+  padding: 10px;
+  background-color: #ebf5eb;
+  border-radius: 4px;
+}
+
+.loading {
+  margin: 20px 0;
+  font-style: italic;
+}

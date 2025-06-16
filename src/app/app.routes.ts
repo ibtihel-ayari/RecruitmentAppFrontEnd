@@ -25,6 +25,7 @@ import { QuizpassComponent } from './components/quizpass/quizpass.component';
 import { FinalvalidationComponent } from './components/finalvalidation/finalvalidation.component';
 import { authGuard } from './auth.guard';
 import { roleGuard } from './role.guard';
+import { FaceverificationComponent } from './components/faceverification/faceverification.component';
 
 export const routes: Routes = [
 { path: 'login', component: LoginComponent },
@@ -73,7 +74,17 @@ export const routes: Routes = [
   // Quiz
   { path: 'quiz', component: QuizComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },
   { path: 'quizgeneration', component: QuizgenerationComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Admin'] } },
-  { path: 'passquiz/:quizId/:applicationId', component: QuizpassComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Candidate'] } },
+  { path: 'passquiz/:quizId/:applicationId', component: QuizpassComponent, canActivate: [authGuard, roleGuard], data: { roles: ['Candidate']
+   } },
+   
+ // Face Verification
+  { 
+    path: 'faceverification/:applicationId', 
+    component: FaceverificationComponent,
+    canActivate: [authGuard, roleGuard], 
+    data: { roles: ['Candidate'] } 
+  },
+
 
   // Final Validation
   { path: 'validation', component: FinalvalidationComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },
