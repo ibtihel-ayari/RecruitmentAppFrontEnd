@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as faceapi from 'face-api.js';
+import { ApplicationService } from '../../services/application.service';
+import { Application } from '../../models/application.model';
 
 @Component({
   selector: 'app-faceverification',
@@ -11,32 +13,33 @@ import * as faceapi from 'face-api.js';
   styleUrl: './faceverification.component.css'
 })
 export class FaceverificationComponent implements OnInit {
-  @ViewChild('video', { static: true }) videoRef!: ElementRef;
+@ViewChild('video', { static: true }) videoRef!: ElementRef;
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef;
 
   resultMessage = '';
-  candidateId = 1; // remplace dynamiquement selon l’utilisateur
+  candidateId = 1; // ⚠️ À remplacer dynamiquement si besoin
 
-  constructor(private http: HttpClient) {}
+  constructor(private applicationService: ApplicationService) {}
 
   async ngOnInit() {
     await this.loadModels();
     this.startCamera();
   }
 
-async loadModels() {
-  await Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('/assets/models/tiny_face_detector'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('/assets/models/face_landmark_68'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('/assets/models/face_recognition')
-  ]);
-}
-
+  async loadModels() {
+    await Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri('/assets/models/tiny_face_detector'),
+      faceapi.nets.faceLandmark68Net.loadFromUri('/assets/models/face_landmark_68'),
+      faceapi.nets.faceRecognitionNet.loadFromUri('/assets/models/face_recognition')
+    ]);
+  }
 
   startCamera() {
     navigator.mediaDevices.getUserMedia({ video: true })
-      .then((stream) => {
-        this.videoRef.nativeElement.srcObject = stream;
+      .then(stream => this.videoRef.nativeElement.srcObject = stream)
+      .catch(err => {
+        console.error("Erreur caméra :", err);
+        this.resultMessage = "Impossible d'accéder à la caméra.";
       });
   }
 
@@ -53,12 +56,19 @@ async loadModels() {
       return;
     }
 
-    // ➤ récupérer la photo enregistrée du candidat
-    this.http.get(`https://localhost:44353/api/applications/GetApplicationById?id=${this.candidateId}`)
-      .subscribe(async (app: any) => {
+    this.applicationService.getLastApplicationByCandidateId(this.candidateId).subscribe({
+      next: async (app: Application) => {
+        if (!app || !app.photoPath) {
+          this.resultMessage = "Photo du candidat introuvable.";
+          return;
+        }
+
+        const fullPhotoUrl = this.applicationService.getPhotoUrl(app.photoPath);
+        console.log("URL photo candidat :", fullPhotoUrl);
+
         const img = new Image();
         img.crossOrigin = "anonymous";
-        img.src = `https://localhost:44353${app.photoPath}`;
+        img.src = fullPhotoUrl;
 
         img.onload = async () => {
           const labeledFace = await faceapi
@@ -67,19 +77,25 @@ async loadModels() {
             .withFaceDescriptor();
 
           if (!labeledFace) {
-            this.resultMessage = "Erreur lors de la détection sur la photo stockée.";
+            this.resultMessage = "Erreur lors de la détection sur la photo.";
             return;
           }
 
-          const distance = faceapi.euclideanDistance(
-            detection.descriptor,
-            labeledFace.descriptor
-          );
+          const distance = faceapi.euclideanDistance(detection.descriptor, labeledFace.descriptor);
 
           this.resultMessage = distance < 0.6
             ? "✅ Identité vérifiée. Vous pouvez passer le quiz."
             : "❌ Identité non reconnue.";
         };
-      });
+
+        img.onerror = () => {
+          this.resultMessage = "Erreur lors du chargement de la photo.";
+        };
+      },
+      error: (err) => {
+        console.error("Erreur serveur :", err);
+        this.resultMessage = "Erreur lors de la récupération de la candidature.";
+      }
+    });
   }
 }

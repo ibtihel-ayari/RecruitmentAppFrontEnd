@@ -23,6 +23,15 @@ getApplications():Observable<Application[]>{
   /*getApplicationsByJobOfferId(id: number): Observable<Application[]> {
     return this.http.get<Application[]>(`${this.apiUrl}/GetApplicationsByJobOfferId?id=${id}`);
   }*/
+ getPhotoUrl(photoPath: string): string {
+  return `https://localhost:44353${photoPath}`;
+}
+
+// Get the last application by candidateId
+getLastApplicationByCandidateId(candidateId: number): Observable<Application> {
+  return this.http.get<Application>(`${this.apiUrl}/GetLastApplicationByCandidateId?candidateId=${candidateId}`);
+}
+
  
   //create a new application
   createAppliation(application:Application):Observable<Application>{
