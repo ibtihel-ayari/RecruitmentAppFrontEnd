@@ -19,10 +19,7 @@ getApplications():Observable<Application[]>{
     return this.http.get<Application>(`${this.apiUrl}/GetApplicationById?id=${id}`);
   }
 
-  //get application by joboffer id
-  /*getApplicationsByJobOfferId(id: number): Observable<Application[]> {
-    return this.http.get<Application[]>(`${this.apiUrl}/GetApplicationsByJobOfferId?id=${id}`);
-  }*/
+ 
  getPhotoUrl(photoPath: string): string {
   return `https://localhost:44353${photoPath}`;
 }

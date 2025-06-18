@@ -78,13 +78,13 @@ export const routes: Routes = [
    } },
    
  // Face Verification
-  { 
-    path: 'faceverification/:applicationId', 
-    component: FaceverificationComponent,
-    canActivate: [authGuard, roleGuard], 
-    data: { roles: ['Candidate'] } 
-  },
-
+ { 
+  path: 'faceverification/:applicationId', 
+  component: FaceverificationComponent 
+  //,
+  //canActivate: [authGuard, roleGuard], 
+  //data: { roles: ['Candidate'] } 
+},
 
   // Final Validation
   { path: 'validation', component: FinalvalidationComponent, canActivate: [authGuard, roleGuard], data: { roles: ['RH', 'Admin'] } },

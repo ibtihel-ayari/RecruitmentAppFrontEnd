@@ -4,6 +4,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { ApplicationService } from '../../services/application.service';
 import { Application } from '../../models/application.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-faceverification',
@@ -13,15 +14,25 @@ import { Application } from '../../models/application.model';
   styleUrl: './faceverification.component.css'
 })
 export class FaceverificationComponent implements OnInit {
-@ViewChild('video', { static: true }) videoRef!: ElementRef;
+ @ViewChild('video', { static: true }) videoRef!: ElementRef;
   @ViewChild('canvas', { static: true }) canvasRef!: ElementRef;
 
   resultMessage = '';
-  candidateId = 1; // ⚠️ À remplacer dynamiquement si besoin
+  applicationId!: number;
 
-  constructor(private applicationService: ApplicationService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private applicationService: ApplicationService
+  ) {}
 
   async ngOnInit() {
+    this.applicationId = Number(this.route.snapshot.paramMap.get('applicationId'));
+    if (!this.applicationId) {
+      this.resultMessage = "Application invalide.";
+      return;
+    }
+
+    // Charger les modèles puis démarrer la caméra
     await this.loadModels();
     this.startCamera();
   }
@@ -56,7 +67,7 @@ export class FaceverificationComponent implements OnInit {
       return;
     }
 
-    this.applicationService.getLastApplicationByCandidateId(this.candidateId).subscribe({
+    this.applicationService.getApplicationById(this.applicationId).subscribe({
       next: async (app: Application) => {
         if (!app || !app.photoPath) {
           this.resultMessage = "Photo du candidat introuvable.";
@@ -93,7 +104,7 @@ export class FaceverificationComponent implements OnInit {
         };
       },
       error: (err) => {
-        console.error("Erreur serveur :", err);
+        console.error("Erreur récupération application :", err);
         this.resultMessage = "Erreur lors de la récupération de la candidature.";
       }
     });
