@@ -31,6 +31,16 @@ export class QuizpassComponent implements OnInit {
 ngOnInit(): void {
   this.quizId = +this.route.snapshot.paramMap.get('quizId')!;
   this.applicationId = +this.route.snapshot.paramMap.get('applicationId')!;
+
+  // Vérifier si l'identité a été vérifiée
+  const isVerified = localStorage.getItem(`faceVerified_${this.applicationId}`) === 'true';
+  
+  if (!isVerified) {
+    alert("Vous devez d'abord vérifier votre identité avant de passer le quiz.");
+    this.router.navigate(['/faceverification', this.applicationId]);
+    return;
+  }
+  
   this.fetchQuiz();
 }
 
@@ -90,6 +100,8 @@ submitQuiz() {
   };
   this.quizService.submitQuiz(submission).subscribe(res => {
     this.isSubmitted = true;
+    // Supprimer la vérification après soumission
+    localStorage.removeItem(`faceVerified_${this.applicationId}`);
     alert(`Quiz soumis avec succès ! Score: ${res.score}%`);
     this.router.navigate(['/merci']);
   });

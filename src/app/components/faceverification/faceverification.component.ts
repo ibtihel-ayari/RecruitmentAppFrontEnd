@@ -4,7 +4,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import * as faceapi from 'face-api.js';
 import { ApplicationService } from '../../services/application.service';
 import { Application } from '../../models/application.model';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-faceverification',
@@ -19,14 +19,20 @@ export class FaceverificationComponent implements OnInit {
 
   resultMessage = '';
   applicationId!: number;
+  quizId!: number;
+
 
   constructor(
     private route: ActivatedRoute,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    private router: Router
+
   ) {}
 
   async ngOnInit() {
     this.applicationId = Number(this.route.snapshot.paramMap.get('applicationId'));
+      this.quizId = Number(this.route.snapshot.paramMap.get('quizId'));
+
     if (!this.applicationId) {
       this.resultMessage = "Application invalide.";
       return;
@@ -97,6 +103,14 @@ img.src = fullPhotoUrl + '?t=' + new Date().getTime(); // Ajout d'un timestamp p
           this.resultMessage = distance < 0.6
             ? "✅ Identité vérifiée. Vous pouvez passer le quiz."
             : "❌ Identité non reconnue.";
+if (distance < 0.6) {
+  localStorage.setItem(`faceVerified_${this.applicationId}`, 'true');
+  setTimeout(() => {
+    this.router.navigate(['/passquiz', this.quizId, this.applicationId]);
+  }, 2000);
+
+  }
+            
         };
 
         img.onerror = () => {
