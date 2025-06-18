@@ -79,7 +79,7 @@ export class FaceverificationComponent implements OnInit {
 
         const img = new Image();
         img.crossOrigin = "anonymous";
-        img.src = fullPhotoUrl;
+img.src = fullPhotoUrl + '?t=' + new Date().getTime(); // Ajout d'un timestamp pour éviter le cache
 
         img.onload = async () => {
           const labeledFace = await faceapi
