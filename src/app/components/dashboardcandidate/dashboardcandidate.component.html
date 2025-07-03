@@ -30,15 +30,17 @@
       <!-- Graphique Barres -->
       <div class="bg-white rounded-3xl shadow-xl p-8 mt-8">
         <h6 class="text-xs font-semibold text-gray-900 mb-6">Suivi des candidatures par statut</h6>
-        <div class="h-[350px]">
+  <div class="h-[320px] max-w-full max-h-full">
           <canvas baseChart
+          class="max-w-full max-h-full"
             [data]="barChartData"
             [options]="barChartOptions"
             chartType="bar">
           </canvas>
         </div>
       </div>
-  
+      
+          
       <!-- Timeline Processus -->
 <!-- Timeline Processus de Candidature - Version Trendy -->
 <div class="bg-white rounded-2xl shadow-sm p-6 mt-12 border border-gray-50">

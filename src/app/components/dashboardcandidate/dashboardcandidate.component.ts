@@ -4,6 +4,7 @@ import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { Application } from '../../models/application.model';
 import { ApplicationService } from '../../services/application.service';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
   selector: 'app-dashboardcandidate',
@@ -56,15 +57,17 @@ export class DashboardcandidateComponent implements OnInit {
     { title: 'Soumission de candidature', description: 'Postulez aux offres en déposant votre dossier.' },
     { title: 'Pré-sélection', description: 'Votre profil est analysé pour une première sélection.' },
     { title: 'Passage du quiz', description: 'Testez vos compétences via un quiz personnalisé.' },
-    { title: 'Entretiens RH et Technique', description: 'Rencontrez nos équipes pour valider votre candidature.' },
-    { title: 'Décision finale', description: 'Réception de la réponse concernant votre candidature.' }
+    { title: 'Validation finale', description: 'Réception de la réponse concernant votre candidature.' }
   ];
 
-  constructor(private applicationService: ApplicationService) {}
+  constructor(private applicationService: ApplicationService,  private quizService: QuizService
+) {}
 
   ngOnInit(): void {
     this.loadCandidateData();
     this.loadApplications();
+      this.loadApplications(); // Ne pas appeler loadQuizzesAndScores ici, car les applications ne sont pas encore chargées
+
   }
 
   private loadCandidateData(): void {
@@ -98,6 +101,8 @@ export class DashboardcandidateComponent implements OnInit {
         if (storedApplications) {
           this.applications = JSON.parse(storedApplications);
           this.calculateStats();
+          this.loadQuizzesAndScores(); // après que les applications soient chargées
+
         }
       }
     });
@@ -147,4 +152,43 @@ export class DashboardcandidateComponent implements OnInit {
       ]
     };
   }
+  private loadQuizzesAndScores(): void {
+  if (this.applications.length === 0) {
+    this.averageQuizScore = 0;
+    return;
+  }
+
+  const applicationIds = this.applications.map(app => app.id);
+
+  this.quizService.getQuizzes().subscribe({
+    next: (quizzes) => {
+      // Filtrer les quiz appartenant à ce candidat
+      const candidateQuizzes = quizzes.filter(q => applicationIds.includes(q.applicationId));
+      
+      // Extraire tous les scores
+      const allScores: number[] = [];
+
+      candidateQuizzes.forEach(quiz => {
+        if (quiz.responses && quiz.responses.length > 0) {
+          quiz.responses.forEach(res => {
+            if (res.score !== undefined && res.score !== null) {
+              allScores.push(res.score);
+            }
+          });
+        }
+      });
+
+      // Calculer la moyenne
+      this.averageQuizScore = allScores.length > 0
+        ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length)
+        : 0;
+
+      console.log('Moyenne quiz du candidat:', this.averageQuizScore);
+    },
+    error: (err) => {
+      console.error('Erreur lors de la récupération des quiz:', err);
+    }
+  });
+}
+
 }
