@@ -22,6 +22,8 @@ selectedApplicationId: number | null = null;
   jobOfferTitles: { [key: number]: string } = {}; // Cache pour les titres des offres
   filteredApplications: Application[] = []; // Applications filtrées
   searchTerm: string = ''; // Terme de recherche
+showDeleteConfirm = false;
+applicationIdToDelete: number | null = null;
 
 
 constructor(private applicationService: ApplicationService, private candidateservice: CandidateService, private jobOfferService: JobofferService){}
@@ -59,27 +61,37 @@ ngOnInit(): void {
           this.selectedApplication = { ...application };
         }
       
-        deleteSelectedApplication() {
-          if (this.selectedApplicationId !== null) {
-            const confirmation = window.confirm("Êtes-vous sûr de vouloir supprimer cette candidature ?");
-        
-            if (confirmation) {
-              this.applicationService.deleteApplication(this.selectedApplicationId).subscribe(() => {
-                this.successMessage = "Candidature supprimée avec succès !";
-                this.selectedApplicationId = null;
-                this.loadApplications();
-        
-                // Effacer le message après 3 secondes
-                setTimeout(() => {
-                  this.successMessage = null;
-                }, 3000);
-              });
-            }
-          } else {
-            alert('Veuillez sélectionner une candidature à supprimer.');
-          }
-        }
+      deleteSelectedApplication() {
+  if (this.selectedApplicationId !== null) {
+    this.applicationIdToDelete = this.selectedApplicationId;
+    this.showDeleteConfirm = true; // Affiche le popup
+  } else {
+    alert('Veuillez sélectionner une candidature à supprimer.');
+  }
+}
 
+
+cancelDelete() {
+  this.showDeleteConfirm = false;
+  this.applicationIdToDelete = null;
+}
+
+confirmDelete() {
+  if (this.applicationIdToDelete !== null) {
+    this.applicationService.deleteApplication(this.applicationIdToDelete).subscribe(() => {
+      this.successMessage = "Candidature supprimée avec succès !";
+      this.selectedApplicationId = null;
+      this.showDeleteConfirm = false;
+      this.applicationIdToDelete = null;
+      this.loadApplications();
+
+      // Effacer le message après 3 secondes
+      setTimeout(() => {
+        this.successMessage = null;
+      }, 3000);
+    });
+  }
+}
 
         loadCandidateNames() {
           this.applications.forEach(application => {

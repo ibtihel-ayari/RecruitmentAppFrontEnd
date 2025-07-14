@@ -44,7 +44,6 @@
     <table class="w-full border-collapse border border-gray-200 text-sm">
       <thead>
         <tr class="bg-gray-100">
-          <th class="border px-4 py-2">Candidat</th>
           <th class="text-lg border px-4 py-2">CV</th>
           <th class="border px-4 py-2">Photo</th>
           <th class="border px-4 py-2">Date de soumission</th>
@@ -58,7 +57,6 @@
       <tbody>
         <tr *ngFor="let application of filteredApplications;">
          
-          <td class="border px-4 py-2 uppercase">{{ getCandidateName(application.candidateId) }}</td>
           <td class="border px-4 py-2">
             <a *ngIf="application.cvFilePath" [href]="getFileUrl(application.cvFilePath)" target="_blank">
               Consulter le CV

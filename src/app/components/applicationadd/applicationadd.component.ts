@@ -25,6 +25,8 @@ export class ApplicationaddComponent {
     candidateId: 0, // sera mis à jour automatiquement
     jobOfferId: 0,
   }
+  successMessage: string | null = null;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -47,27 +49,33 @@ export class ApplicationaddComponent {
     }
   }
 
-  onSubmit(): void {
-    if (!this.application.cvFile || !this.application.photo) {
-      console.error('CV and Photo are required');
-      return;
-    }
-
-    this.applicationservice.createApplications(
-      this.application,
-      this.application.cvFile,
-      this.application.photo
-    ).subscribe(
-      (response) => {
-        console.log('Application created:', response);
-        alert('Application created successfully!');
-        this.router.navigate(['/joboffer']);
-      },
-      (error) => {
-        console.error('Error creating application:', error);
-      }
-    );
+ onSubmit(): void {
+  if (!this.application.cvFile || !this.application.photo) {
+    console.error('CV and Photo are required');
+    return;
   }
+
+  this.applicationservice.createApplications(
+    this.application,
+    this.application.cvFile,
+    this.application.photo
+  ).subscribe(
+    (response) => {
+      console.log('Application created:', response);
+      this.successMessage = "Candidature ajoutée avec succès !";
+
+      // Supprimer le message et rediriger après 2 secondes
+      setTimeout(() => {
+        this.successMessage = null;
+        this.router.navigate(['/joboffer']);
+      }, 2000);
+    },
+    (error) => {
+      console.error('Error creating application:', error);
+    }
+  );
+}
+
 
   onCvSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
