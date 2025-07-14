@@ -16,7 +16,7 @@ import { QuizService } from '../../services/quiz.service';
 export class DashboardcandidateComponent implements OnInit {
   totalApplications: number = 0;
   ongoingApplications: number = 0;
-  averageQuizScore: number = 0;
+  averageQuizScore: number = 71;
   candidateData: any;
   applications: Application[] = [];
   currentCandidateId: number | null = null;
@@ -156,6 +156,7 @@ export class DashboardcandidateComponent implements OnInit {
   if (this.applications.length === 0) {
     this.averageQuizScore = 0;
     return;
+
   }
 
   const applicationIds = this.applications.map(app => app.id);
