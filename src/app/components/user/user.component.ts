@@ -17,6 +17,9 @@ export class UserComponent implements OnInit {
   users: User[] = [];
   selectedUserId: number | null = null;
   selectedUser: User | null = null;
+  showDeleteConfirm = false;
+userIdToDelete: number | null = null;
+
 
   constructor(private userService: UserService) {}
 
@@ -49,16 +52,31 @@ export class UserComponent implements OnInit {
     this.selectedUser = { ...user };
   }
 
-  deleteSelectedUser() {
-    if (this.selectedUserId !== null) {
-      this.userService.deleteUser(this.selectedUserId).subscribe(() => {
-        this.selectedUserId = null;
-        this.loadUsers();
-      });
-    } else {
-      alert('Veuillez sélectionner un utilisateur à supprimer.');
-    }
+ deleteSelectedUser() {
+  if (this.selectedUserId !== null) {
+    this.userIdToDelete = this.selectedUserId;
+    this.showDeleteConfirm = true;
+  } else {
+    alert('Veuillez sélectionner un utilisateur à supprimer.');
   }
+}
+
+cancelDelete() {
+  this.showDeleteConfirm = false;
+  this.userIdToDelete = null;
+}
+
+confirmDelete() {
+  if (this.userIdToDelete !== null) {
+    this.userService.deleteUser(this.userIdToDelete).subscribe(() => {
+      this.showDeleteConfirm = false;
+      this.userIdToDelete = null;
+      this.selectedUserId = null;
+      this.loadUsers();
+    });
+  }
+}
+
 /*
   updateUser() {
     if (this.selectedUser && this.selectedUser.Id !== undefined) {
@@ -79,5 +97,8 @@ export class UserComponent implements OnInit {
       });
     }
   }
+
+
+  
   
 }

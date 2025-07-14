@@ -55,5 +55,17 @@
         </tr>
       </tbody>
     </table>
+    <!-- Popup de confirmation de suppression -->
+<div *ngIf="showDeleteConfirm" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+    <h6 class="text-lg font-semibold text-gray-800 mb-4">Confirmer la suppression</h6>
+    <p class="text-sm text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.</p>
+    <div class="flex justify-end space-x-3">
+      <button (click)="cancelDelete()" class="px-4 py-2 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 transition">Annuler</button>
+      <button (click)="confirmDelete()" class="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition">Supprimer</button>
+    </div>
+  </div>
+</div>
+
   </div>
 </div>
