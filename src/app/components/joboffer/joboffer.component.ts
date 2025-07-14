@@ -21,6 +21,8 @@ export class JobofferComponent implements OnInit {
   showTopApplicationsForJob: number | null = null; 
   expandedOffers: { [key: number]: boolean } = {};
 
+showDeleteConfirm = false;
+jobOfferIdToDelete: number | null = null;
 
 
   constructor(private jobOfferService: JobofferService, private auth: AuthService) {}
@@ -66,14 +68,31 @@ export class JobofferComponent implements OnInit {
     }
   }
 
-  deleteSelectedJobOffer() {
-    if (this.selectedJobOfferId !== null) {
-      this.jobOfferService.deleteJobOffer(this.selectedJobOfferId).subscribe(() => {
-        this.loadJobOffers();
-        this.selectedJobOfferId = null; // Reset selection
-      });
-    }
+deleteSelectedJobOffer() {
+  if (this.selectedJobOfferId !== null) {
+    this.jobOfferIdToDelete = this.selectedJobOfferId;
+    this.showDeleteConfirm = true;
+  } else {
+    alert('Veuillez sélectionner une offre à supprimer.');
   }
+}
+
+cancelDelete() {
+  this.showDeleteConfirm = false;
+  this.jobOfferIdToDelete = null;
+}
+
+confirmDelete() {
+  if (this.jobOfferIdToDelete !== null) {
+    this.jobOfferService.deleteJobOffer(this.jobOfferIdToDelete).subscribe(() => {
+      this.loadJobOffers();
+      this.showDeleteConfirm = false;
+      this.selectedJobOfferId = null;
+      this.jobOfferIdToDelete = null;
+    });
+  }
+}
+
   filterByLocation() {
     const search = this.searchLocation.toLowerCase();
     this.filteredJobOffers = this.jobOffers.filter(offer =>
