@@ -1,8 +1,10 @@
 <div class="relative min-h-screen flex flex-col justify-center items-center p-8 bg-gray-100">
+  <!-- Timer -->
   <div class="absolute top-5 right-8 font-bold text-lg">
-Temps restant : {{ displayTime }}
+    Temps restant : {{ displayTime }}
   </div>
 
+  <!-- Quiz Content -->
   <div class="w-full max-w-2xl mb-8 bg-white p-8 rounded-2xl shadow-lg">
     <h2 class="text-xl font-semibold mb-4">
       Question {{ currentIndex + 1 }} / {{ questions.length }}
@@ -24,6 +26,7 @@ Temps restant : {{ displayTime }}
     </ul>
   </div>
 
+  <!-- Navigation Buttons -->
   <div class="w-full max-w-2xl flex justify-between">
     <button
       (click)="previous()"
@@ -38,5 +41,78 @@ Temps restant : {{ displayTime }}
     >
       {{ currentIndex === questions.length - 1 ? 'Soumettre' : 'Suivant →' }}
     </button>
+  </div>
+
+  <!-- Score Modal -->
+  <div *ngIf="showScoreModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-md transform transition-all">
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 p-6 text-white">
+        <h4 class="text-2xl font-bold text-center">Résultats du Quiz</h4>
+      </div>
+      
+      <!-- Content -->
+      <div class="p-6">
+        <div class="flex flex-col items-center mb-6">
+          <!-- Circular Progress -->
+          <div class="relative w-40 h-40 mb-4">
+            <svg class="w-full h-full" viewBox="0 0 100 100">
+              <!-- Background Circle -->
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="#e6e6e6"
+                stroke-width="8"
+              />
+              <!-- Progress Circle -->
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="url(#gradient)"
+                stroke-width="8"
+                stroke-linecap="round"
+                [attr.stroke-dasharray]="283"
+                [attr.stroke-dashoffset]="283 - (283 * score / 100)"
+                transform="rotate(-90 50 50)"
+              />
+              <defs>
+                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#3b82f6" />
+                  <stop offset="100%" stop-color="#8b5cf6" />
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="absolute inset-0 flex items-center justify-center flex-col">
+              <span class="text-3xl font-bold">{{ score }}%</span>
+              <span class="text-sm text-gray-600">{{ correctAnswers }}/{{ totalQuestions }} correct</span>
+            </div>
+          </div>
+          
+          <!-- Message based on score -->
+          <div class="text-center">
+            <h5 class="text-xl font-semibold mb-2">
+              {{ score >= 80 ? 'Excellent !' : score >= 50 ? 'Bon travail !' : 'Merci pour votre participation' }}
+            </h5>
+            <p class="text-gray-600">
+              Votre participation a été enregistrée.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="bg-gray-50 px-6 py-4 flex justify-end">
+        <button
+          (click)="closeModal()"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          OK
+        </button>
+      </div>
+    </div>
   </div>
 </div>
